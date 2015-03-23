@@ -1,8 +1,16 @@
 #include "cam.h"
 
-Cam::Cam(QObject *parent):QObject(parent),camera*()
-{
+#include <sstream>
+#include <iostream>
 
+#include <cstdio>
+
+#include <rec/robotino/api2/all.h>
+
+Cam::Cam(QObject *parent)
+    : QObject(parent),
+      Camera()
+{
     return;
 }
 
@@ -12,6 +20,9 @@ void Cam::imageReceivedEvent( const unsigned char* data,
                               unsigned int height,
                               unsigned int step )
 {
+    Q_UNUSED(dataSize);
+    Q_UNUSED(step);
+
     static unsigned int seq = 0;
 
     std::ostringstream os;

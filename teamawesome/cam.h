@@ -3,7 +3,9 @@
 
 #include <QObject>
 
-class Cam : public QObject, Camera
+#include <rec/robotino/api2/Camera.h>
+
+class Cam : public QObject, rec::robotino::api2::Camera
 {
     Q_OBJECT
 public:

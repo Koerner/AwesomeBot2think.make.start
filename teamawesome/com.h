@@ -11,9 +11,10 @@ public:
     Com(std::string client_name = "example_camera",
         std::string hostname = "172.26.1.1",
         bool blockingConnect = true)
-    : rec::robotino::api2::Com( client_name )
+        : rec::robotino::api2::Com( client_name.c_str() )
     {
-        this->setAddress(hostname);
+        ;
+        this->setAddress(hostname.c_str());
         this->connectToServer(blockingConnect);
     }
     ~Com(){
@@ -37,7 +38,7 @@ public:
 
     void logEvent( const char* message, int level )
     {
-        std::cout << message << std::endl;
+        std::cout << "(" << level << ") " << message << std::endl;
     }
 
     void pingEvent( float timeMs )
