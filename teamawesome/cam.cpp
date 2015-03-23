@@ -1,18 +1,14 @@
 #include "cam.h"
 
-#include <sstream>
-#include <iostream>
+#include <rec/robotino/api2/Camera.h>
 
-#include <cstdio>
-
-#include <rec/robotino/api2/all.h>
+#include <opencv2/opencv.hpp>
 
 Cam::Cam(QObject *parent)
     : QObject(parent),
-      Camera()
-{
-    return;
-}
+      rec::robotino::api2::Camera()
+{ }
+
 
 void Cam::imageReceivedEvent( const unsigned char* data,
                               unsigned int dataSize,
@@ -23,27 +19,9 @@ void Cam::imageReceivedEvent( const unsigned char* data,
     Q_UNUSED(dataSize);
     Q_UNUSED(step);
 
-    static unsigned int seq = 0;
+    const cv::Mat mat(height, width, CV_8UC3, const_cast<unsigned char*>(data));
+    cv::Mat img = mat.clone(); // make a copy of our frame
+    cv::cvtColor( img, img, CV_BGR2RGB); // convert to opencv's BGR scheme
 
-    std::ostringstream os;
-    os << "image" << seq << ".ppm";
-
-    FILE* fp = fopen( os.str().c_str(), "w");
-    if ( fp == NULL )
-    {
-        std::cerr << "Error: Cannot open file " << os.str() << std::endl;
-    }
-    else
-    {
-        std::cout << "Writing image to " << os.str() << std::endl;
-        fprintf(fp, "P6 %d %d 255\n", width, height);
-        fwrite(data, width * height * 3, 1, fp);
-    }
-    ++seq;
-
-    if( isLocalConnection() )
-    {
-        std::cout << "Local connection" << std::endl;
-        setFormat( 320, 240, "raw" );
-    }
+    emit signalImage(img, this->cameraNumber());
 }

@@ -8,7 +8,7 @@
 class Com : public rec::robotino::api2::Com
 {
 public:
-    Com(std::string client_name = "example_camera",
+    Com(std::string client_name = "awesome",
         std::string hostname = "172.26.1.1",
         bool blockingConnect = true)
         : rec::robotino::api2::Com( client_name.c_str() )
@@ -23,12 +23,12 @@ public:
 
     void errorEvent( const char* errorString )
     {
-        std::cerr << "Error: " << errorString << std::endl;
+        std::cerr << "Com: Error: " << errorString << std::endl;
     }
 
     void connectedEvent()
     {
-        std::cout << "Connected." << std::endl;
+        std::cout << "Com: Connected." << std::endl;
     }
 
     void connectionClosedEvent()
@@ -38,12 +38,12 @@ public:
 
     void logEvent( const char* message, int level )
     {
-        std::cout << "(" << level << ") " << message << std::endl;
+        std::cout << "Com: Log (" << level << "): " << message << std::endl;
     }
 
     void pingEvent( float timeMs )
     {
-        std::cout << "Ping: " << timeMs << "ms" << std::endl;
+        std::cout << "Com: Ping: " << timeMs << "ms" << std::endl;
     }
 };
 
