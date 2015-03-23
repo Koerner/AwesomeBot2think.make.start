@@ -7,7 +7,9 @@ LIBS += -lrec_robotino_api2
 
 SOURCES += \
     main.cpp \
-    com.cpp
+    com.cpp \
+    cam.cpp
 
 HEADERS += \
-    com.h
+    com.h \
+    cam.h
