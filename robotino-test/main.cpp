@@ -112,10 +112,6 @@ void init( const std::string& hostname )
     if( false == com.isConnected() )
     {
         std::cout << std::endl << "Could not connect to " << com.address() << std::endl;
-#ifdef WIN32
-        std::cout << "Press any key to exit..." << std::endl;
-        rec::robotino::api2::waitForKey();
-#endif
         rec::robotino::api2::shutdown();
         exit( 1 );
     }
