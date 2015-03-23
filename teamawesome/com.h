@@ -3,13 +3,21 @@
 
 #include <rec/robotino/api2/Com.h>
 
+#include <string>
 
 class Com : public rec::robotino::api2::Com
 {
 public:
-    Com()
-    : rec::robotino::api2::Com( "example_camera" )
+    Com(std::string client_name = "example_camera",
+        std::string hostname = "172.26.1.1",
+        bool blockingConnect = true)
+    : rec::robotino::api2::Com( client_name )
     {
+        this->setAddress(hostname);
+        this->connectToServer(blockingConnect);
+    }
+    ~Com(){
+        this->disconnectFromServer();
     }
 
     void errorEvent( const char* errorString )
