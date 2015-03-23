@@ -15,6 +15,3 @@ sudo apt-get install robotino-api2 robotino-examples
 sudo ln -s /usr/local/robotino/api2/include/rec /usr/local/include/rec
 
 sudo ln -s /usr/local/robotino/api2/lib/librec_robotino_api2.so /usr/local/lib/librec_robotino_api2.so
-
-
-sudo ldconfig
