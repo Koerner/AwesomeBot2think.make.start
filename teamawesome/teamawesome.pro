@@ -1,5 +1,4 @@
-QT       += core gui
-QT += widgets
+QT       += core network gui widgets
 
 TARGET = teamawesome
 TEMPLATE = app
@@ -17,7 +16,7 @@ SOURCES += \
     robotinocontrol.cpp \
     gamepad.cpp \
     renderwindow.cpp \
-    dxlctrl.cpp
+    dxlcon.cpp
 
 
 HEADERS += \
@@ -28,6 +27,6 @@ HEADERS += \
     robotinocontrol.h \
     gamepad.h \
     renderwindow.h \
-    dxlctrl.h
+    dxlcon.h
 
 FORMS    += mainwindow.ui

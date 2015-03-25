@@ -20,6 +20,8 @@ private:
 public:
     explicit Gamepad(QObject *parent = 0);
 
+    enum Buttons {BTN_A=0,BTN_B=1,BTN_X=2,BTN_Y=3};
+
 signals:
     void buttonA(bool);
     void buttonB(bool);
