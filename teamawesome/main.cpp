@@ -25,7 +25,7 @@ int main (int argc, char** argv) {
 
     qRegisterMetaType <cv::Mat> ("cv::Mat");
 
-    QApplication a(argc, argv);
+    QCoreApplication a(argc, argv);
 
 
     try {
@@ -58,14 +58,15 @@ int main (int argc, char** argv) {
         Gamepad joystick;
         joystick.moveToThread(threadOfJoy);
         threadOfJoy->setObjectName("Thread of Joy");
-//        threadOfJoy->start();
+
+        threadOfJoy->start();
 
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
 
         // Joystick loop starten
-//        QMetaObject::invokeMethod(&joystick, "run");
+        QMetaObject::invokeMethod(&joystick, "run");
 
         // das ist die hauptschleife, später vlt in eigenes qobject auf eigenem thread?
         while(com->isConnected()) {

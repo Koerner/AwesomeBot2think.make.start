@@ -21,13 +21,17 @@ Gamepad::Gamepad(QObject *parent) :
 
     m_controllerIndex = 0;
 //    sf::Joystick::update();
+    QTimer *timer = new QTimer(this);
+    timer->start(20);
+    connect(timer, SIGNAL(timeout()), this, SLOT(run()));
 
 }
 
 void Gamepad::run()
 {
-    while(true)
-    {
+    //qDebug() << "---Gamepad---";
+    //while(true)
+    //{
 
         QCoreApplication::processEvents();
         sf::Joystick::update();
@@ -76,7 +80,7 @@ void Gamepad::run()
 
         //QThread::msleep(20);
 
-    }
+    //}
 
     return;
 }

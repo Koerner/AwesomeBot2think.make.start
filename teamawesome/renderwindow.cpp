@@ -22,7 +22,7 @@ RenderWindow::~RenderWindow()
 
 void RenderWindow::slotFrame(cv::Mat img)
 {
-    std::cout << "slotFrame" << std::endl;
+    //std::cout << "slotFrame" << std::endl;
 
     sf::Image image;
     cv::Mat frameRGBA(img);

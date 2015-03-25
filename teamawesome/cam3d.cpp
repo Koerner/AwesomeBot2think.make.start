@@ -50,10 +50,10 @@ Cam3D::~Cam3D()
 
 void Cam3D::slotImage(cv::Mat img, int source)
 {
-    std::cout << "got img from " << source << std::endl;
+    //std::cout << "got img from " << source << std::endl;
 
-    cv::Mat outL(output, cv::Rect(0, 0, imageWidth, imageHeight));
-    cv::Mat outR(output, cv::Rect(imageWidth, 0, imageWidth, imageHeight));
+    cv::Mat outL(output, cv::Rect(imageWidth, 0, imageWidth, imageHeight));
+    cv::Mat outR(output, cv::Rect(0, 0, imageWidth, imageHeight));
 
     if(source == 0){
         img.copyTo(outL);
@@ -68,7 +68,7 @@ void Cam3D::slotImage(cv::Mat img, int source)
         return;
     dirtyL = false;
     dirtyR = false;
-    qDebug()<<"send sync image";
+    //qDebug()<<"send sync image";
 
     emit signalImage(output);
 }
