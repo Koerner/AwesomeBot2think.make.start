@@ -13,7 +13,7 @@
 #include "robotinocontrol.h"
 #include "mainwindow.h"
 #include "renderwindow.h"
-#include "dxlctrl.h"
+#include "dxlcon.h"
 
 // Global pointers
 Com* com;
@@ -39,8 +39,10 @@ int main (int argc, char** argv) {
         std::cout << "connected." << std::endl;
 
         // Dynamixel Ansteuerung
-        DxlCtrl dxlCtrl;
-
+        DxlCon dxlCon;
+        dxlCon.setDxl(DxlCon::YAW, DxlCon::POS, DxlCon::MIN);
+        dxlCon.setDxl(DxlCon::ROLL, DxlCon::POS, DxlCon::MID);
+        dxlCon.setDxl(DxlCon::PITCH, DxlCon::POS, DxlCon::MID);
 
         // Cam3D erstellen
         QThread threadCam;

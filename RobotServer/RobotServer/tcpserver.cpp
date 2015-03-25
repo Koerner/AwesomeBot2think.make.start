@@ -9,7 +9,7 @@
 
 const int TcpServer::port = 50000;
 const int TcpServer::dxlIndex = 0;
-const int TcpServer::dxlBaud = 1;
+const int TcpServer::dxlBaud = 34; // 57k6 Bd
 
 TcpServer::TcpServer(QObject *parent) :
     QObject(parent)
@@ -110,16 +110,17 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
         return WRONG;
     }
 
-    qDebug() << "recognized: id" << id << ", addr" << addr << ", val" << val;
+    qDebug() << "Got id" << id << ", addr" << addr << ", val" << val;
 
     dxl_write_word(id, addr, val);
     int result = dxl_get_result();
     if( result == COMM_TXSUCCESS || result == COMM_RXSUCCESS )
     {
-        qDebug() << "write succeded";
+//        qDebug() << "write succeded";
     }
     else if( result == COMM_TXFAIL || result == COMM_RXFAIL || COMM_TXERROR )
     {
+        qWarning() << "Dynamixel comm failed.";
     }
     else if( result == COMM_RXWAITING )
     {

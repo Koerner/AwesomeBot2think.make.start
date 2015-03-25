@@ -36,15 +36,9 @@ void Gamepad::run()
         QCoreApplication::processEvents();
         sf::Joystick::update();
 
-//        Q_SIGNAL buttonA(sf::Joystick::isButtonPressed(m_controllerIndex,0));
-//        Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,1));
-//        Q_SIGNAL buttonY(sf::Joystick::isButtonPressed(m_controllerIndex,3));
-//        Q_SIGNAL buttonX(sf::Joystick::isButtonPressed(m_controllerIndex,2));
-
-
-        if(sf::Joystick::isButtonPressed(m_controllerIndex,0) == true)
+        if(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_A) == true)
         {
-            std::cout << "Button A Pressed" << std::endl;
+//            std::cout << "Button A Pressed" << std::endl;
 
             double joystick_y = sf::Joystick::getAxisPosition(0,sf::Joystick::Y);
             double joystick_x = sf::Joystick::getAxisPosition(0,sf::Joystick::X);
@@ -60,18 +54,6 @@ void Gamepad::run()
             Q_SIGNAL setCarLike(0,0,0);
         }
 
-//        if(sf::Joystick::isButtonPressed(m_controllerIndex,1) == true)
-//        {
-//            //std::cout << "Button B Pressed" << std::endl;
-//        }
-//        if(sf::Joystick::isButtonPressed(m_controllerIndex,3) == true)
-//        {
-//            //std::cout << "Button Y Pressed" << std::endl;
-//        }
-//        if(sf::Joystick::isButtonPressed(m_controllerIndex,2) == true)
-//        {
-//            //std::cout << "Button X Pressed" << std::endl;
-//        }
 
 //        Q_SIGNAL joystick_left(sf::Joystick::getAxisPosition(0,sf::Joystick::X), -1 * sf::Joystick::getAxisPosition(0,sf::Joystick::Y));
 //        Q_SIGNAL joystick_left(sf::Joystick::getAxisPosition(0,sf::Joystick::U), -1 * sf::Joystick::getAxisPosition(0,sf::Joystick::V));
