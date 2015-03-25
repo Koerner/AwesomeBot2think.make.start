@@ -40,9 +40,9 @@ int main (int argc, char** argv) {
 
         // Dynamixel Ansteuerung
         DxlCon dxlCon;
-        dxlCon.setDxl(DxlCon::YAW, DxlCon::POS, DxlCon::MIN);
-        dxlCon.setDxl(DxlCon::ROLL, DxlCon::POS, DxlCon::MID);
-        dxlCon.setDxl(DxlCon::PITCH, DxlCon::POS, DxlCon::MID);
+        dxlCon.setDxlPos(DxlCon::YAW, 0);
+        dxlCon.setDxlPos(DxlCon::ROLL, 0);
+        dxlCon.setDxlPos(DxlCon::PITCH, 0);
 
         // Cam3D erstellen
         QThread threadCam;

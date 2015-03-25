@@ -21,7 +21,15 @@ DxlCon::~DxlCon()
     delete socket;
 }
 
-void DxlCon::setDxl(DxlId id, DxlCmd cmd, DxlVal val)
+void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
+{
+    while(angleDeg < 0) angleDeg += 360.0;
+    angleDeg += 180.0; // servos are mounted reverse
+    int angleVal = qRound(4096 * angleDeg / 360.0) % 4096;
+    setDxl(id, POS, angleVal);
+}
+
+void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
 {
     QString strId = QString::number(id);
     QString strAddr = QString::number(cmd);

@@ -17,12 +17,12 @@ public:
 
     enum DxlId {YAW=10, ROLL=20, PITCH=30};
     enum DxlCmd {POS=30};
-    enum DxlVal {MIN=1500,MID=2000,MAX=2500};
 
 signals:
 
 public slots:
-    void setDxl(DxlId id, DxlCmd cmd, DxlVal val);
+    void setDxlPos(DxlId id, double angleDeg);
+    void setDxl(DxlId id, DxlCmd cmd, int val);
 
 private slots:
     void slotConnected();
