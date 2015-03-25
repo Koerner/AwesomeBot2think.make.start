@@ -7,6 +7,7 @@
 
 // Forward declaration
 class Cam;
+class QElapsedTimer;
 
 class Cam3D : public QObject
 {
@@ -15,18 +16,20 @@ public:
     explicit Cam3D(QObject *parent = 0);
     ~Cam3D();
 
-    void run();
-
     static const int imageWidth, imageHeight;
+    static const std::string imageFormat;
 
 signals:
+    void signalImage(cv::Mat img);
 
 public slots:
     void slotImage (cv::Mat img, int source);
 
 private:
+    bool dirtyL, dirtyR;
     Cam *camL, *camR;
     cv::Mat output;
+    QElapsedTimer* timer;
 
 };
 

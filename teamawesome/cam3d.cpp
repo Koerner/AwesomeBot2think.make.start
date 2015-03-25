@@ -8,6 +8,7 @@
 
 const int Cam3D::imageWidth = 640;
 const int Cam3D::imageHeight = 480;
+const std::string Cam3D::imageFormat = "mjpeg";
 
 Cam3D::Cam3D(QObject *parent) :
     QObject(parent)
@@ -21,15 +22,21 @@ Cam3D::Cam3D(QObject *parent) :
 
     camL = new Cam();
     camR = new Cam();
-    camL->setFormat(imageWidth, imageHeight, "jpg");
+    camL->setFormat(imageWidth, imageHeight, imageFormat.c_str());
     camL->setCameraNumber(0);
-    camR->setFormat(imageWidth, imageHeight, "jpg");
+    camR->setFormat(imageWidth, imageHeight, imageFormat.c_str());
     camR->setCameraNumber(1);
 
     QObject::connect(camL, SIGNAL(signalImage(cv::Mat, int)), this, SLOT(slotImage(cv::Mat,int)));
     QObject::connect(camR, SIGNAL(signalImage(cv::Mat, int)), this, SLOT(slotImage(cv::Mat,int)));
 
-    }
+    dirtyL = false;
+    dirtyR = false;
+
+    timer = new QElapsedTimer;
+    timer->start();
+
+}
 
 Cam3D::~Cam3D()
 {
@@ -37,32 +44,27 @@ Cam3D::~Cam3D()
     delete camR;
 }
 
-void Cam3D::run()
-{
-    while(true){
-    }
-}
-
-
 
 void Cam3D::slotImage(cv::Mat img, int source)
 {
-//    std::cout << "got img from " << source << std::endl;
+    std::cout << "got img from " << source << std::endl;
 
     cv::Mat outL(output, cv::Rect(0, 0, imageWidth, imageHeight));
     cv::Mat outR(output, cv::Rect(imageWidth, 0, imageWidth, imageHeight));
 
     if(source == 0){
         img.copyTo(outL);
+        dirtyL = true;
     } else {
         img.copyTo(outR);
+        dirtyR = true;
     }
 
-    //scale down for debug
-    cv::Mat resized(output);
-    cv::resize(output, resized, cv::Size(imageWidth *2,imageHeight));
+    // "sync" images
+    if(!(dirtyL && dirtyR))
+        return;
+    dirtyL = false;
+    dirtyR = false;
 
-    // TODO: do something with this!
-    cv::imshow("Team Awesome", resized);
-    cv::waitKey(1);
+    emit signalImage(output);
 }

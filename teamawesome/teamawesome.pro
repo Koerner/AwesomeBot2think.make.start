@@ -5,7 +5,8 @@ TARGET = teamawesome
 TEMPLATE = app
 
 LIBS += -lrec_robotino_api2
-LIBS += -lsfml-window
+LIBS += -ldxl
+LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 
 SOURCES += \
@@ -14,7 +15,9 @@ SOURCES += \
     cam.cpp \
     cam3d.cpp \
     robotinocontrol.cpp \
-    gamepad.cpp
+    gamepad.cpp \
+    renderwindow.cpp \
+    dxlctrl.cpp
 
 
 HEADERS += \
@@ -23,6 +26,8 @@ HEADERS += \
     cam.h \
     cam3d.h \
     robotinocontrol.h \
-    gamepad.h
+    gamepad.h \
+    renderwindow.h \
+    dxlctrl.h
 
 FORMS    += mainwindow.ui

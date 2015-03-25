@@ -12,6 +12,8 @@
 #include "gamepad.h"
 #include "robotinocontrol.h"
 #include "mainwindow.h"
+#include "renderwindow.h"
+#include "dxlctrl.h"
 
 // Global pointers
 Com* com;
@@ -24,8 +26,6 @@ int main (int argc, char** argv) {
     qRegisterMetaType <cv::Mat> ("cv::Mat");
 
     QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
 
 
     try {
@@ -38,28 +38,44 @@ int main (int argc, char** argv) {
         }
         std::cout << "connected." << std::endl;
 
+        // Dynamixel Ansteuerung
+        DxlCtrl dxlCtrl;
+
+
         // Cam3D erstellen
+        QThread threadCam;
+        threadCam.setObjectName("Camera Thread");
         Cam3D cam;
+        cam.moveToThread(&threadCam);
+        threadCam.start();
+
+        // renderWindow für Oculus Display
+        RenderWindow render;
+        QObject::connect(&cam, SIGNAL(signalImage(cv::Mat)), &render, SLOT(slotFrame(cv::Mat)));
 
         // Gamepad erstellen
         QThread* threadOfJoy = new QThread();
         Gamepad joystick;
-
         joystick.moveToThread(threadOfJoy);
         threadOfJoy->setObjectName("Thread of Joy");
-        threadOfJoy->start();
+//        threadOfJoy->start();
 
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
-
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
-        joystick.publish();
+
+        // Joystick loop starten
+//        QMetaObject::invokeMethod(&joystick, "run");
 
         // das ist die hauptschleife, später vlt in eigenes qobject auf eigenem thread?
         while(com->isConnected()) {
+
+            QCoreApplication::processEvents();
             com->processEvents();
 
-            rec::robotino::api2::msleep( 100 );
+//            rec::robotino::api2::msleep( 20 );
+//            QThread::msleep(20);
+
         }
 
 
@@ -68,7 +84,6 @@ int main (int argc, char** argv) {
         exit(1);
         rec::robotino::api2::shutdown();
     }
-    return a.exec();
 
 
 }

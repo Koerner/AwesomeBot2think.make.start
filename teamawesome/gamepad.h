@@ -34,7 +34,7 @@ signals:
 
 
 public slots:
-    void publish();
+    void run();
 
 
 };

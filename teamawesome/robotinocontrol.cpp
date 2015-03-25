@@ -8,7 +8,7 @@ RobotinoControl::RobotinoControl(QObject *parent) :
 
 void RobotinoControl::setCarLike(double vx, double vy, double theta)
 {
-    std::cout << "Set Car Like (" << vx << "mm/s , "<< vy << "mm/s , "<< theta << "deg/s )" << std::endl;
+//    std::cout << "Set Car Like (" << vx << "mm/s , "<< vy << "mm/s , "<< theta << "deg/s )" << std::endl;
     this->setVelocity(vx,vy,theta);
     return;
 }
