@@ -22,10 +22,13 @@ Cam3D::Cam3D(QObject *parent) :
 
     camL = new Cam();
     camR = new Cam();
-    camL->setFormat(imageWidth, imageHeight, imageFormat.c_str());
     camL->setCameraNumber(0);
-    camR->setFormat(imageWidth, imageHeight, imageFormat.c_str());
+    camL->setFormat(imageWidth, imageHeight, imageFormat.c_str());
+
+    qDebug() << "Cam # " << camL->numCameras();
     camR->setCameraNumber(1);
+    camR->setFormat(imageWidth, imageHeight, imageFormat.c_str());
+    qDebug() << "Cam # " << camR->numCameras();
 
     QObject::connect(camL, SIGNAL(signalImage(cv::Mat, int)), this, SLOT(slotImage(cv::Mat,int)));
     QObject::connect(camR, SIGNAL(signalImage(cv::Mat, int)), this, SLOT(slotImage(cv::Mat,int)));
@@ -65,6 +68,7 @@ void Cam3D::slotImage(cv::Mat img, int source)
         return;
     dirtyL = false;
     dirtyR = false;
+    qDebug()<<"send sync image";
 
     emit signalImage(output);
 }

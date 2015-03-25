@@ -74,7 +74,7 @@ void Gamepad::run()
 //        Q_SIGNAL pedal(sf::Joystick::getAxisPosition(0,sf::Joystick::Z),sf::Joystick::getAxisPosition(0,sf::Joystick::R));
 
 
-        QThread::msleep(20);
+        //QThread::msleep(20);
 
     }
 
