@@ -13,6 +13,8 @@ public:
     explicit OculusSensor(QObject *parent = 0);
     ~OculusSensor();
 
+    static const double scaleYaw, scaleRoll, scalePitch;
+
 signals:
     void signalSensorData(double yaw, double roll, double pitch);
 

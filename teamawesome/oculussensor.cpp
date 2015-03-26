@@ -3,6 +3,10 @@
 #include <OVR.h>
 #include <QtCore>
 
+const double OculusSensor::scaleYaw = 1.0;
+const double OculusSensor::scalePitch = 1.0;
+const double OculusSensor::scaleRoll = 1.0;
+
 OculusSensor::OculusSensor(QObject *parent) :
     QObject(parent)
 {
@@ -39,5 +43,5 @@ void OculusSensor::slotTimerGetTracking()
         OVR::Quatf quaternion = ts.HeadPose.ThePose.Orientation;
         quaternion.GetEulerAngles<OVR::Axis_Y, OVR::Axis_X, OVR::Axis_Z>(&yaw, &eyePitch, &eyeRoll);
     }
-    emit signalSensorData(yaw, eyePitch, eyeRoll);
+    emit signalSensorData(yaw*scaleYaw, eyePitch*scalePitch, eyeRoll*scaleRoll);
 }
