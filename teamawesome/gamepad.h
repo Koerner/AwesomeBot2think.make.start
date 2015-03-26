@@ -16,6 +16,7 @@ private:
     static const double m_rotationScaling;
     static const double m_speedScaling;
     static const double m_joystickThreshold;
+    static const double m_viewScaling;
 
 public:
     explicit Gamepad(QObject *parent = 0);
@@ -33,6 +34,7 @@ signals:
     void pedal(double left, double right);
 
     void setCarLike(double vx, double vy, double theta);
+    void setView(double yaw, double pitch, double roll);
 
 
 public slots:

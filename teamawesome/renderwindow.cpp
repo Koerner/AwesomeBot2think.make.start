@@ -10,7 +10,7 @@
 RenderWindow::RenderWindow(QObject *parent) :
     QObject(parent)
 {
-    window = new sf::RenderWindow(sf::VideoMode(Cam3D::imageWidth*2, Cam3D::imageHeight), "Team Awesome");
+    window = new sf::RenderWindow(sf::VideoMode(1920, 1080 ), "Team Awesome");
     window->display();
 
 }

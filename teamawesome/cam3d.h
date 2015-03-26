@@ -16,6 +16,7 @@ public:
     explicit Cam3D(QObject *parent = 0);
     ~Cam3D();
 
+    static const int outputWidth, outputHeight;
     static const int imageWidth, imageHeight;
     static const std::string imageFormat;
 

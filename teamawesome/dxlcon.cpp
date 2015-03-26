@@ -1,6 +1,7 @@
 #include "dxlcon.h"
 
 #include <QtCore>
+#include "iostream"
 #include <QtNetwork>
 
 const QString DxlCon::host = QString("172.26.1.1");
@@ -21,6 +22,16 @@ DxlCon::~DxlCon()
     delete socket;
 }
 
+void DxlCon::setDxlPos(double yaw,double pitch,double roll)
+{
+    this->setDxlPos(DxlCon::YAW, yaw);
+    this->setDxlPos(DxlCon::PITCH, pitch);
+    this->setDxlPos(DxlCon::ROLL, roll);
+    return;
+}
+
+
+
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {
     while(angleDeg < 0) angleDeg += 360.0;
@@ -35,7 +46,7 @@ void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
     QString strAddr = QString::number(cmd);
     QString strVal = QString::number(val);
     QString str = strId + ";" + strAddr + ";" + strVal + "\n";
-    qDebug() << "sending" << str;
+    //qDebug() << "sending" << str;
     QByteArray out(str.toStdString().c_str());
     socket->write(out);
 }

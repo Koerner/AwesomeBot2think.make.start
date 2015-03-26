@@ -8,6 +8,9 @@
 
 const int Cam3D::imageWidth = 640;
 const int Cam3D::imageHeight = 480;
+
+const int Cam3D::outputWidth = 960;
+const int Cam3D::outputHeight = 1080;
 const std::string Cam3D::imageFormat = "mjpeg";
 
 Cam3D::Cam3D(QObject *parent) :
@@ -18,7 +21,7 @@ Cam3D::Cam3D(QObject *parent) :
         std::cerr << "not enough cameras (" << rec::robotino::api2::Camera::numCameras() << ") found" << std::endl;
     }
 
-    output = cv::Mat(imageHeight, 2 * imageWidth, CV_8UC3);
+    output = cv::Mat(outputHeight, 2 * outputWidth, CV_8UC3);
 
     camL = new Cam();
     camR = new Cam();
@@ -52,14 +55,23 @@ void Cam3D::slotImage(cv::Mat img, int source)
 {
     //std::cout << "got img from " << source << std::endl;
 
-    cv::Mat outL(output, cv::Rect(imageWidth, 0, imageWidth, imageHeight));
-    cv::Mat outR(output, cv::Rect(0, 0, imageWidth, imageHeight));
+    cv::Mat outL(output, cv::Rect(outputWidth, 0, outputWidth, outputHeight));
+    cv::Mat outR(output, cv::Rect(0, 0, outputWidth, outputHeight));
+
+    cv::Mat temp = cv::Mat(outputHeight, outputWidth, CV_8UC3);
+    cv::resize(img,temp,cv::Size(outputWidth,outputHeight));
+
 
     if(source == 0){
-        img.copyTo(outL);
+        //cv::resize(outL,img,cv::Size(outputWidth,outputHeight));
+        temp.copyTo(outL);
+
         dirtyL = true;
+
     } else {
-        img.copyTo(outR);
+        //cv::resize(outR,img,cv::Size(outputWidth,outputHeight));
+        temp.copyTo(outR);
+
         dirtyR = true;
     }
 

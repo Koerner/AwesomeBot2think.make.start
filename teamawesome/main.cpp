@@ -66,6 +66,7 @@ int main (int argc, char** argv) {
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
+        QObject::connect(&joystick, SIGNAL(setView(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
 
         // Joystick loop starten
         QMetaObject::invokeMethod(&joystick, "run");

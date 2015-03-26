@@ -21,6 +21,7 @@ public:
 signals:
 
 public slots:
+    void setDxlPos(double yaw,double pitch,double roll);
     void setDxlPos(DxlId id, double angleDeg);
     void setDxl(DxlId id, DxlCmd cmd, int val);
 
