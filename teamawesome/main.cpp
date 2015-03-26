@@ -14,6 +14,7 @@
 #include "mainwindow.h"
 #include "renderwindow.h"
 #include "dxlcon.h"
+#include "oculussensor.h"
 
 // Global pointers
 Com* com;
@@ -67,6 +68,10 @@ int main (int argc, char** argv) {
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
         QObject::connect(&joystick, SIGNAL(setView(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
+
+        // Oculus Sensoren
+        OculusSensor oculus;
+        QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
 
         // Joystick loop starten
         QMetaObject::invokeMethod(&joystick, "run");

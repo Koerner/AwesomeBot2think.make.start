@@ -7,6 +7,7 @@ LIBS += -lrec_robotino_api2
 LIBS += -ldxl
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
+LIBS += -lovr -lrt -lXrandr -lGL -lXxf86vm -lpthread -lX11
 
 SOURCES += \
     mainwindow.cpp \
@@ -16,7 +17,8 @@ SOURCES += \
     robotinocontrol.cpp \
     gamepad.cpp \
     renderwindow.cpp \
-    dxlcon.cpp
+    dxlcon.cpp \
+    oculussensor.cpp
 
 
 HEADERS += \
@@ -27,6 +29,7 @@ HEADERS += \
     robotinocontrol.h \
     gamepad.h \
     renderwindow.h \
-    dxlcon.h
+    dxlcon.h \
+    oculussensor.h
 
 FORMS    += mainwindow.ui
