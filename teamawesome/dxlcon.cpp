@@ -42,6 +42,12 @@ void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 
 void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
 {
+    if(id == 20 && cmd == 30 && val > 2400) val = 2400;
+    if(id == 20 && cmd == 30 && val < 800) val = 800;
+    if(id == 30 && cmd == 30 && val < 1500) val = 1500;
+    if(id == 30 && cmd == 30 && val > 2700) val = 2700;
+
+
     QString strId = QString::number(id);
     QString strAddr = QString::number(cmd);
     QString strVal = QString::number(val);

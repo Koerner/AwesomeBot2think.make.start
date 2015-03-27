@@ -41,16 +41,19 @@ void Gamepad::run()
         Q_SIGNAL setCarLike(0,0,0);
     }
 
+    Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
+
+
     if(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B) == true)
     {
-        double joystick_u = sf::Joystick::getAxisPosition(0,sf::Joystick::U);
-        double joystick_v = sf::Joystick::getAxisPosition(0,sf::Joystick::V);
+        //double joystick_u = sf::Joystick::getAxisPosition(0,sf::Joystick::U);
+        //double joystick_v = sf::Joystick::getAxisPosition(0,sf::Joystick::V);
 
-        if(fabs(joystick_u) < m_joystickThreshold) {joystick_u = 0;}
-        if(fabs(joystick_v) < m_joystickThreshold) {joystick_v = 0;}
+        //if(fabs(joystick_u) < m_joystickThreshold) {joystick_u = 0;}
+        //if(fabs(joystick_v) < m_joystickThreshold) {joystick_v = 0;}
 
 
-        Q_SIGNAL setView(joystick_u,0,joystick_v);
+        //Q_SIGNAL setView(joystick_u,0,joystick_v);
         //Q_SIGNAL setView(-1*m_viewScaling*joystick_u,-1*m_viewScaling*joystick_v,0);
     }
     else

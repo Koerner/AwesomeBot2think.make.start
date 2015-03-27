@@ -63,13 +63,11 @@ void Cam3D::slotImage(cv::Mat img, int source)
 
 
     if(source == 0){
-        //cv::resize(outL,img,cv::Size(outputWidth,outputHeight));
         temp.copyTo(outL);
 
         dirtyL = true;
 
     } else {
-        //cv::resize(outR,img,cv::Size(outputWidth,outputHeight));
         temp.copyTo(outR);
 
         dirtyR = true;
@@ -78,6 +76,8 @@ void Cam3D::slotImage(cv::Mat img, int source)
     // "sync" images
     if(!(dirtyL && dirtyR))
         return;
+
+
     dirtyL = false;
     dirtyR = false;
     //qDebug()<<"send sync image";

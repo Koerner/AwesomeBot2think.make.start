@@ -72,6 +72,8 @@ int main (int argc, char** argv) {
         // Oculus Sensoren
         OculusSensor oculus;
         QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
+        QObject::connect(&oculus, SIGNAL(signalRobotData(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
+        QObject::connect(&joystick, SIGNAL(buttonB(bool)), &oculus, SLOT(slotbuttonB(bool)));
 
         // Joystick loop starten
         QMetaObject::invokeMethod(&joystick, "run");
