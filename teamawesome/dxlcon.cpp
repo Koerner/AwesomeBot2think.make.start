@@ -14,6 +14,8 @@ DxlCon::DxlCon(QObject *parent) :
     connect(socket, SIGNAL(connected()), this, SLOT(slotConnected()));
 
     socket->connectToHost(host, port);
+    setDxl(CAM_YAW,TORQUE_LIMIT,1023);
+    setDxl(CAM_YAW,POS, 2048);
 }
 
 DxlCon::~DxlCon()
@@ -22,14 +24,25 @@ DxlCon::~DxlCon()
     delete socket;
 }
 
-void DxlCon::setDxlPos(double yaw,double pitch,double roll)
+void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
 {
-    this->setDxlPos(DxlCon::YAW, yaw);
-    this->setDxlPos(DxlCon::PITCH, pitch);
-    this->setDxlPos(DxlCon::ROLL, roll);
+    this->setDxlPos(DxlCon::CAM_YAW, yaw);
+    this->setDxlPos(DxlCon::CAM_PITCH, pitch);
+    this->setDxlPos(DxlCon::CAM_ROLL, roll);
     return;
 }
 
+void DxlCon::setDxlInter(double yaw, double pitch)
+{
+    this->setDxlPos(DxlCon::INTER_YAW, yaw);
+    this->setDxlPos(DxlCon::INTER_PITCH, pitch);
+    return;
+}
+
+void DxlCon::setDxlTrig()
+{
+    return;
+}
 
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)

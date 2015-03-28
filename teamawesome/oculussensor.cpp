@@ -110,13 +110,15 @@ void OculusSensor::slotTimerGetTracking()
 
         if(buttonB == true)
         {
-            Q_EMIT signalSensorData((lp_0 * oldYaw + lp_1 * yaw)*scaleYaw, (lp_0 * oldRoll + lp_1 * eyeRoll)*scaleRoll, (lp_0 *oldPitch + lp_1 * eyePitch)*scalePitch);
-
             if(fabs(yaw) > yawThreshold)
             {
                 yaw = sign(yaw) * yawThreshold;
                 Q_EMIT signalRobotData(0,0,sign(yaw));
+                //std::cout << "Turning" << std::endl;
             }
+
+            //std::cout << yaw << std::endl;
+            Q_EMIT signalSensorData((lp_0 * oldYaw + lp_1 * yaw)*scaleYaw, (lp_0 * oldRoll + lp_1 * eyeRoll)*scaleRoll, (lp_0 *oldPitch + lp_1 * eyePitch)*scalePitch);
 
         }
     }
