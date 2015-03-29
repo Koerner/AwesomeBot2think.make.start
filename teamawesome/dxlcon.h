@@ -15,8 +15,8 @@ public:
     static const QString host;
     static const int port;
 
-    enum DxlId {YAW=10, ROLL=20, PITCH=30};
-    enum DxlCmd {POS=30};
+    enum DxlId {YAW=10, ROLL=20, PITCH=30, TRIGGER=100, NERF_YAW=110, NERF_PITCH=120};
+    enum DxlCmd {POS=30, TORQUE=34};
 
 signals:
 

@@ -8,6 +8,7 @@ LIBS += -ldxl
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 LIBS += -lovr -lrt -lXrandr -lGL -lXxf86vm -lpthread -lX11
+LIBS += -laruco
 
 SOURCES += \
     mainwindow.cpp \
