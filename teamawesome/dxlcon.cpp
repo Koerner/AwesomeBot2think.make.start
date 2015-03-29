@@ -45,7 +45,7 @@ void DxlCon::setDxlTrig()
 {
     if(triggerReset)
     {
-        this->setDxl(DxlCon::INTER_TRIG, DxlCon::POS, 1400);
+        this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
         QTimer::singleShot(50,this,SLOT(resetDxlTrig));
         triggerReset = false;
     }
@@ -55,7 +55,7 @@ void DxlCon::setDxlTrig()
 
 void DxlCon::resetDxlTrig()
 {
-    this->setDxl(DxlCon::INTER_TRIG, DxlCon::POS, 2048);
+    this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
     triggerReset = true;
     return;
 }
