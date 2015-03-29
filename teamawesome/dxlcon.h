@@ -14,6 +14,7 @@ public:
 
     static const QString host;
     static const int port;
+    static const int timeReset;
 
     enum DxlId {CAM_YAW=10, CAM_ROLL=20, CAM_PITCH=30, NERF_TRIGGER=100, NERF_YAW=110, NERF_PITCH=120};
     enum DxlCmd {POS=30, TORQUE_LIMIT=34};
@@ -21,10 +22,9 @@ public:
 signals:
 
 public slots:
-    void setDxlInter(double yaw, double pitch);
+    void setDxlNerf(double yaw, double pitch);
 
     void setDxlTrig();
-    void resetDxlTrig();
 
     void setDxlCamera(double yaw,double pitch,double roll);
     void setDxlPos(DxlId id, double angleDeg);
@@ -33,6 +33,10 @@ public slots:
 
 private slots:
     void slotConnected();
+    void resetTrig();
+    void resetDxlTrig();
+
+
 
 private:
     QTcpSocket *socket;

@@ -6,6 +6,7 @@
 
 const QString DxlCon::host = QString("172.26.1.1");
 const int DxlCon::port = 50000;
+const int DxlCon::timeReset = 300;
 
 DxlCon::DxlCon(QObject *parent) :
     QObject(parent)
@@ -34,7 +35,7 @@ void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
     return;
 }
 
-void DxlCon::setDxlInter(double yaw, double pitch)
+void DxlCon::setDxlNerf(double yaw, double pitch)
 {
     this->setDxlPos(DxlCon::NERF_YAW, yaw);
     this->setDxlPos(DxlCon::NERF_PITCH, pitch);
@@ -46,7 +47,7 @@ void DxlCon::setDxlTrig()
     if(triggerReset)
     {
         this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
-        QTimer::singleShot(50,this,SLOT(resetDxlTrig));
+        QTimer::singleShot(timeReset,this,SLOT(resetDxlTrig()));
         triggerReset = false;
     }
 
@@ -56,10 +57,16 @@ void DxlCon::setDxlTrig()
 void DxlCon::resetDxlTrig()
 {
     this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
-    triggerReset = true;
+    QTimer::singleShot(timeReset,this,SLOT(resetTrig()));
     return;
 }
 
+
+void DxlCon::resetTrig()
+{
+    triggerReset = true;
+    return;
+}
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {
