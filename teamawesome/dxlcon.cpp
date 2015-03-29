@@ -16,6 +16,8 @@ DxlCon::DxlCon(QObject *parent) :
     socket->connectToHost(host, port);
     setDxl(CAM_YAW,TORQUE_LIMIT,1023);
     setDxl(CAM_YAW,POS, 2048);
+
+    this->resetDxlTrig();
 }
 
 DxlCon::~DxlCon()
@@ -41,6 +43,20 @@ void DxlCon::setDxlInter(double yaw, double pitch)
 
 void DxlCon::setDxlTrig()
 {
+    if(triggerReset)
+    {
+        this->setDxl(DxlCon::INTER_TRIG, DxlCon::POS, 1400);
+        QTimer::singleShot(50,this,SLOT(resetDxlTrig));
+        triggerReset = false;
+    }
+
+    return;
+}
+
+void DxlCon::resetDxlTrig()
+{
+    this->setDxl(DxlCon::INTER_TRIG, DxlCon::POS, 2048);
+    triggerReset = true;
     return;
 }
 
