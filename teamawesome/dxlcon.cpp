@@ -36,8 +36,8 @@ void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
 
 void DxlCon::setDxlInter(double yaw, double pitch)
 {
-    this->setDxlPos(DxlCon::INTER_YAW, yaw);
-    this->setDxlPos(DxlCon::INTER_PITCH, pitch);
+    this->setDxlPos(DxlCon::NERF_YAW, yaw);
+    this->setDxlPos(DxlCon::NERF_PITCH, pitch);
     return;
 }
 
