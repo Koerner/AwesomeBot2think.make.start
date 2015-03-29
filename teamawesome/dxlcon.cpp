@@ -61,6 +61,16 @@ void DxlCon::resetDxlTrig()
     return;
 }
 
+// Set Nerf gun motor speed. val: 0..100
+void DxlCon::setNerfMotor(const int val)
+{
+    int motVal = 0;
+    if(val >= 0 && val <= 100) motVal = val;
+    setDxl(NERF_MOTOR, NERF_MOTOR_SET, motVal / 2);
+}
+
+
+
 
 void DxlCon::resetTrig()
 {

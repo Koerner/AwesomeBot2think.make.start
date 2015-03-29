@@ -16,8 +16,8 @@ public:
     static const int port;
     static const int timeReset;
 
-    enum DxlId {CAM_YAW=10, CAM_ROLL=20, CAM_PITCH=30, NERF_TRIGGER=100, NERF_YAW=110, NERF_PITCH=120};
-    enum DxlCmd {POS=30, TORQUE_LIMIT=34};
+    enum DxlId {CAM_YAW=10, CAM_ROLL=20, CAM_PITCH=30, NERF_TRIGGER=100, NERF_YAW=110, NERF_PITCH=120, NERF_MOTOR=1000};
+    enum DxlCmd {POS=30, NERF_MOTOR_SET=1, TORQUE_LIMIT=34};
 
 signals:
 
@@ -25,6 +25,8 @@ public slots:
     void setDxlNerf(double yaw, double pitch);
 
     void setDxlTrig();
+
+    void setNerfMotor(const int val);
 
     void setDxlCamera(double yaw,double pitch,double roll);
     void setDxlPos(DxlId id, double angleDeg);
