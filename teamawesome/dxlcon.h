@@ -22,7 +22,10 @@ signals:
 
 public slots:
     void setDxlInter(double yaw, double pitch);
+
     void setDxlTrig();
+    void resetDxlTrig();
+
     void setDxlCamera(double yaw,double pitch,double roll);
     void setDxlPos(DxlId id, double angleDeg);
     void setDxl(DxlId id, DxlCmd cmd, int val);
@@ -33,6 +36,8 @@ private slots:
 
 private:
     QTcpSocket *socket;
+
+    bool triggerReset;
 
 
 };

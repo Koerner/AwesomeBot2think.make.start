@@ -51,7 +51,14 @@ void Gamepad::run()
         Q_SIGNAL setCarLike(0,0,0);
     }
 
+    if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_RB) == true)
+    {
+        Q_SIGNAL setTrig();
+    }
+
     Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
+
+
 
     return;
 }

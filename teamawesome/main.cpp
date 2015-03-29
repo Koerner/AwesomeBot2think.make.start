@@ -72,6 +72,7 @@ int main (int argc, char** argv) {
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
         QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setInterPos(double,double)));
+        QObject::connect(&joystick, SIGNAL(setTrig()), &dxlCon, SLOT(setDxlTrig()));
 
         // Oculus Sensoren
         OculusSensor oculus;
