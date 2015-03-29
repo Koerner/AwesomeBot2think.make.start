@@ -56,6 +56,7 @@ int main (int argc, char** argv) {
         t.start();
         dxlCon.setNerfMotor(100);
         QThread::msleep(1000);
+        qDebug() << "nerf motor running";
 
         forever {
             dxlCon.setNerfMotor(33);
@@ -64,6 +65,7 @@ int main (int argc, char** argv) {
             dxlCon.setNerfMotor(100);
             QThread::msleep(500);
 
+            qDebug() << "shoot";
             dxlCon.setDxlTrig();
             QThread::msleep(500);
 
