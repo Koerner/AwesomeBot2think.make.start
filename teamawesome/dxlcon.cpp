@@ -18,6 +18,8 @@ DxlCon::DxlCon(QObject *parent) :
     setDxl(CAM_YAW,TORQUE_LIMIT,1023);
     setDxl(CAM_YAW,POS, 2048);
 
+    resetTrig();
+
     this->resetDxlTrig();
 }
 
@@ -46,6 +48,7 @@ void DxlCon::setDxlTrig()
 {
     if(triggerReset)
     {
+        std::cout << "shot"<<std::endl;
         this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
         QTimer::singleShot(timeReset,this,SLOT(resetDxlTrig()));
         triggerReset = false;
