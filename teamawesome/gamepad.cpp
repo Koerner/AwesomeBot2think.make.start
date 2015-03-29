@@ -4,7 +4,7 @@
 
 const double Gamepad::m_speedScaling = 0.0025;
 const double Gamepad::m_rotationScaling = 0.01;
-const double Gamepad::m_interactionScaling = 0.35;
+const double Gamepad::m_interactionScaling = 0.01;
 const double Gamepad::m_joystickThreshold = 15;
 const double Gamepad::m_viewScaling = 1;
 

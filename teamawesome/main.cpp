@@ -50,24 +50,30 @@ int main (int argc, char** argv) {
         dxlCon.setDxlPos(DxlCon::NERF_YAW, 0);
         dxlCon.setDxlPos(DxlCon::NERF_TRIGGER, 0);
 
+//        std::cout << "dxl fertig" << std::endl;
 
-        // Nerf Motor
-        QElapsedTimer t;
-        t.start();
-        dxlCon.setNerfMotor(100);
-        QThread::msleep(1000);
+//        // Nerf Motor
+//        rec::robotino::api2::PowerOutput nerfMotor;
+//        rec::robotino::api2::Relay nerf;
+//        QElapsedTimer t;
+//        t.start();
+//        forever {
+////            double val = 1.0 * t.elapsed() / 3000.0;
+////            val = 50 * qSin(val) + 50;
+////            val *= 6.0 / 24.0;
+////            nerfMotor.setValue(val);
+////            qDebug() << "set" << val / 100 * 24.0 << "V (" << val << "%)";
+////            nerfMotor.setValue(100 * 6.0 / 24.0);
+//            nerf.setValue(true);
+//            QThread::msleep(5);
+//            nerf.setValue(false);
+//            QThread::msleep(5);
 
-        forever {
-            dxlCon.setNerfMotor(33);
-            QThread::msleep(3000);
-
-            dxlCon.setNerfMotor(100);
-            QThread::msleep(500);
-
-            dxlCon.setDxlTrig();
-            QThread::msleep(500);
-
-        }
+////            QThread::msleep(1000);
+////            dxlCon.setDxlPos(DxlCon::TRIGGER, 0);
+////            QThread::msleep(1000);
+////            dxlCon.setDxlPos(DxlCon::TRIGGER, 57);
+//        }
 
 
         // Cam3D erstellen
@@ -92,7 +98,7 @@ int main (int argc, char** argv) {
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
-        QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setDxlNerf(double,double)));
+        QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setInterPos(double,double)));
         QObject::connect(&joystick, SIGNAL(setTrig()), &dxlCon, SLOT(setDxlTrig()));
 
         // Oculus Sensoren
