@@ -60,17 +60,15 @@ void RenderWindow::prepareAR()
     }
     */
 
+    AR1     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR2     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR3     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR4     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR724   = cv::imread("AR/AR724.png", CV_LOAD_IMAGE_COLOR);
 
-    AR1 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR2 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR3 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR4 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR724 = cv::imread("AR/AR724.png", CV_LOAD_IMAGE_COLOR);
-    AR724_counter=0;
-
+    AR724_counter   =   0;
 
     //AR Calibration
-
     if(CALIBRATED_CAM)
     {
         try
@@ -93,46 +91,45 @@ void RenderWindow::slotFrame(cv::Mat img)
     //std::cout << "slotFrame" << std::endl;
 
     //AR CODE Detection
-
     try
     {
         aruco::MarkerDetector MDetector;
         vector<aruco::Marker> Markers;
+
         if(CALIBRATED_CAM)
         {
-        cv::Mat imgUndis;
-        cv::undistort(img,imgUndis,CameraParams.CameraMatrix,CameraParams.Distorsion);
-        MDetector.detect(imgUndis,Markers);
+            cv::Mat imgUndis;
+            cv::undistort(img,imgUndis,CameraParams.CameraMatrix,CameraParams.Distorsion);
+            MDetector.detect(imgUndis,Markers);
         }
         else
         {
-        MDetector.detect(img,Markers);
+            MDetector.detect(img,Markers);
         }
 
         //for each marker, draw info and its boundaries in the image
         cv::Mat tempMat;
+        aruco::Marker temp;
+
         for (unsigned int i=0;i<Markers.size();i++)
         {
-            aruco::Marker temp = Markers.at(i);
-
+            temp = Markers.at(i);
 
             qDebug()<<"Marker "<< temp.id;
             temp.draw(img,cv::Scalar(0,0,255),2);
-
 
             switch (temp.id)
             {
             case 724:
                 tempMat = AR724;
+
                 AR724_marker = temp;
                 AR724_counter = KEEP_TIME;
                 break;
+
             default:
                 qDebug() << "Falsche ID";
             }
-
-
-
 
             /*if(tempMat.size().height>0)
             {
@@ -149,15 +146,25 @@ void RenderWindow::slotFrame(cv::Mat img)
 
 
         }
+
         if(AR724_counter>0)
         {
+            //
             AR724_counter = AR724_counter - 1;
             tempMat = AR724;
+
+            // Resize the augmented image to fit the image to the area of the Marker
             cv::Mat tempMatResized;
             cv::Size size(AR724_marker.getPerimeter()/4,AR724_marker.getPerimeter()/4);
             cv::resize(AR724,tempMatResized,size);
+
+            // Get Center of the Marker
             cv::Point2f originMarker = AR724_marker.getCenter();
+
+            // Compute the Region of Interest for the Marker
             cv::Rect roi( cv::Point(originMarker.x - (tempMatResized.size().width /2 ), originMarker.y - (tempMatResized.size().height /2 )), tempMatResized.size() );
+
+            // Copy the Image into the Picture
             tempMatResized.copyTo( img( roi ) );
         }
 
@@ -167,7 +174,6 @@ void RenderWindow::slotFrame(cv::Mat img)
         cout<<"Exception :"<<ex.what()<<endl;
     }
 
-
     sf::Image image;
     cv::Mat frameRGBA(img);
     cv::cvtColor(img, frameRGBA, cv::COLOR_BGR2RGBA);
@@ -176,6 +182,7 @@ void RenderWindow::slotFrame(cv::Mat img)
     texture.loadFromImage(image);
     sf::Sprite sprite;
     sprite.setTexture(texture);
+
     window->draw(sprite);
     window->display();
 }
