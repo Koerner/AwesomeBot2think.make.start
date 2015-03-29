@@ -18,7 +18,7 @@ RenderWindow::RenderWindow(QObject *parent) :
     QObject(parent)
 {
     window = new sf::RenderWindow(sf::VideoMode(1920, 1080 ), "Team Awesome");
-    window->setPosition(sf::Vector2i(2000,500));
+    //window->setPosition(sf::Vector2i(1200,500));
     window->display();
 
 
@@ -60,15 +60,18 @@ void RenderWindow::prepareAR()
     }
     */
 
-    AR1     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR2     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR3     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR4     = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
-    AR724   = cv::imread("AR/AR724.png", CV_LOAD_IMAGE_COLOR);
 
-    AR724_counter   =   0;
+    AR1 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR2 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR3 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR4 = cv::imread("AR/AR1.png", CV_LOAD_IMAGE_COLOR);
+    AR72x = cv::imread("AR/AR72x.png", CV_LOAD_IMAGE_COLOR);
+    AR72x_counterL=0;
+    AR72x_counterR=0;
+
 
     //AR Calibration
+
     if(CALIBRATED_CAM)
     {
         try
@@ -91,6 +94,7 @@ void RenderWindow::slotFrame(cv::Mat img)
     //std::cout << "slotFrame" << std::endl;
 
     //AR CODE Detection
+
     try
     {
         aruco::MarkerDetector MDetector;
@@ -98,74 +102,110 @@ void RenderWindow::slotFrame(cv::Mat img)
 
         if(CALIBRATED_CAM)
         {
-            cv::Mat imgUndis;
-            cv::undistort(img,imgUndis,CameraParams.CameraMatrix,CameraParams.Distorsion);
-            MDetector.detect(imgUndis,Markers);
+        cv::Mat imgUndis;
+        cv::undistort(img,imgUndis,CameraParams.CameraMatrix,CameraParams.Distorsion);
+        MDetector.detect(imgUndis,Markers);
         }
         else
         {
-            MDetector.detect(img,Markers);
+        MDetector.detect(img,Markers);
         }
 
         //for each marker, draw info and its boundaries in the image
         cv::Mat tempMat;
-        aruco::Marker temp;
-
         for (unsigned int i=0;i<Markers.size();i++)
         {
-            temp = Markers.at(i);
+            aruco::Marker temp = Markers.at(i);
 
-            qDebug()<<"Marker "<< temp.id;
-            temp.draw(img,cv::Scalar(0,0,255),2);
+
+
+            //temp.draw(img,cv::Scalar(0,0,255),2);
+
 
             switch (temp.id)
             {
             case 724:
-                tempMat = AR724;
+            case 725:
+            case 726:
+            case 727:
+            {
 
-                AR724_marker = temp;
-                AR724_counter = KEEP_TIME;
+                tempMat = AR72x;
+                qDebug()<<"Marker "<< temp.id;
+                cv::Point2f center_temp = temp.getCenter();
+
+                if(center_temp.x < ( img.cols / 2))
+                {
+                    tempMat = AR72x;
+                    AR72x_markerL = temp;
+                    qDebug() << "LINKS";
+                    AR72x_counterL = KEEP_TIME;
+
+                }
+
+                if(center_temp.x > ( img.cols / 2))
+                {
+                    AR72x_markerR = temp;
+                    qDebug() << "RECHTS";
+                    AR72x_counterR = KEEP_TIME;
+                }
+            }
                 break;
 
             default:
-                qDebug() << "Falsche ID";
+                qDebug() << "Diese ID ist nicht konfiguriert";
             }
 
-            /*if(tempMat.size().height>0)
+        }
+
+        //AR show AR Image
+
+        //LINKS
+
+        if(AR72x_counterL>0)
+        {
+            AR72x_counterL = AR72x_counterL - 1;
+            tempMat = AR72x;
+
+
+            if(!AR72x_markerL.empty())
             {
-                cv::Point2f originMarker = temp.getCenter();
-                cv::Rect roi( cv::Point(originMarker.x - (tempMat.size().width /2 ), originMarker.y - (tempMat.size().height /2 )), tempMat.size() );
-                tempMat.copyTo( img( roi ) );
-                qDebug() << "show AR Image";
+                cv::Mat tempMatResized1;
+                cv::Size sizeL(AR72x_markerL.getPerimeter()/4,AR72x_markerL.getPerimeter()/4);
+                cv::resize(AR72x,tempMatResized1,sizeL);
+                //Center of Marker
+                cv::Point2f originMarker1 = AR72x_markerL.getCenter();
+                //Rectangle of image
+                cv::Rect roiL( cv::Point(originMarker1.x - (tempMatResized1.size().width /2 ),
+                                         originMarker1.y - (tempMatResized1.size().height /2 )),
+                               tempMatResized1.size() );
+                //Copy image into camera frame
+                tempMatResized1.copyTo( img( roiL ) );
             }
-            else
-            {
-                qDebug() << "Image not loaded";
-            }
-            */
 
 
         }
 
-        if(AR724_counter>0)
-        {
-            //
-            AR724_counter = AR724_counter - 1;
-            tempMat = AR724;
+         //RECHTS
 
-            // Resize the augmented image to fit the image to the area of the Marker
-            cv::Mat tempMatResized;
-            cv::Size size(AR724_marker.getPerimeter()/4,AR724_marker.getPerimeter()/4);
-            cv::resize(AR724,tempMatResized,size);
+        if(AR72x_counterR>0){
+            AR72x_counterR = AR72x_counterR - 1;
+            tempMat = AR72x;
 
-            // Get Center of the Marker
-            cv::Point2f originMarker = AR724_marker.getCenter();
-
-            // Compute the Region of Interest for the Marker
-            cv::Rect roi( cv::Point(originMarker.x - (tempMatResized.size().width /2 ), originMarker.y - (tempMatResized.size().height /2 )), tempMatResized.size() );
-
-            // Copy the Image into the Picture
-            tempMatResized.copyTo( img( roi ) );
+            if(!AR72x_markerR.empty())
+            {
+                cv::Mat tempMatResized2;
+                cv::Size sizeR(AR72x_markerR.getPerimeter()/4,AR72x_markerR.getPerimeter()/4);
+                cv::resize(AR72x,tempMatResized2,sizeR);
+                //Center of Marker
+                cv::Point2f originMarker2 = AR72x_markerR.getCenter();
+                //Rectangle of image
+                cv::Rect roiR( cv::Point(originMarker2.x - (tempMatResized2.size().width /2 ),
+                                         originMarker2.y - (tempMatResized2.size().height /2 )),
+                               tempMatResized2.size() );
+                //Copy image into camera frame
+                tempMatResized2.copyTo( img( roiR ) );
+            }
         }
 
     }
@@ -173,6 +213,7 @@ void RenderWindow::slotFrame(cv::Mat img)
     {
         cout<<"Exception :"<<ex.what()<<endl;
     }
+
 
     sf::Image image;
     cv::Mat frameRGBA(img);
@@ -182,7 +223,6 @@ void RenderWindow::slotFrame(cv::Mat img)
     texture.loadFromImage(image);
     sf::Sprite sprite;
     sprite.setTexture(texture);
-
     window->draw(sprite);
     window->display();
 }

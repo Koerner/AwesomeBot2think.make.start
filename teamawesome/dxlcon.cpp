@@ -6,7 +6,6 @@
 
 const QString DxlCon::host = QString("172.26.1.1");
 const int DxlCon::port = 50000;
-const int DxlCon::timeReset = 300;
 
 DxlCon::DxlCon(QObject *parent) :
     QObject(parent)
@@ -17,8 +16,6 @@ DxlCon::DxlCon(QObject *parent) :
     socket->connectToHost(host, port);
     setDxl(CAM_YAW,TORQUE_LIMIT,1023);
     setDxl(CAM_YAW,POS, 2048);
-
-    resetTrig();
 
     this->resetDxlTrig();
 }
@@ -37,7 +34,7 @@ void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
     return;
 }
 
-void DxlCon::setDxlNerf(double yaw, double pitch)
+void DxlCon::setDxlInter(double yaw, double pitch)
 {
     this->setDxlPos(DxlCon::NERF_YAW, yaw);
     this->setDxlPos(DxlCon::NERF_PITCH, pitch);
@@ -50,7 +47,7 @@ void DxlCon::setDxlTrig()
     {
         std::cout << "shot"<<std::endl;
         this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
-        QTimer::singleShot(timeReset,this,SLOT(resetDxlTrig()));
+        QTimer::singleShot(50,this,SLOT(resetDxlTrig));
         triggerReset = false;
     }
 
@@ -60,26 +57,17 @@ void DxlCon::setDxlTrig()
 void DxlCon::resetDxlTrig()
 {
     this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
-    QTimer::singleShot(timeReset,this,SLOT(resetTrig()));
+    triggerReset = true;
     return;
 }
 
-// Set Nerf gun motor speed. val: 0..100
 void DxlCon::setNerfMotor(const int val)
 {
     int motVal = 0;
     if(val >= 0 && val <= 100) motVal = val;
-    setDxl(NERF_MOTOR, NERF_MOTOR_SET, motVal / 2);
+    setDxl(DxlCon::NERF_MOTOR, DxlCon::SET_NERF_MOT, motVal);
 }
 
-
-
-
-void DxlCon::resetTrig()
-{
-    triggerReset = true;
-    return;
-}
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {

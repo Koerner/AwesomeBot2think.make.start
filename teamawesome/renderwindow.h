@@ -26,9 +26,12 @@ private:
     cv::Mat AR2;
     cv::Mat AR3;
     cv::Mat AR4;
-    cv::Mat AR724;
-    int AR724_counter;
-    aruco::Marker AR724_marker;
+    cv::Mat AR72x;
+    int AR72x_counterL;
+    int AR72x_counterR;
+    aruco::Marker AR72x_markerL;
+    aruco::Marker AR72x_markerR;
+    bool AR72x_two;
 
     static const float MARRKERSIZE = 0.035;
     static const bool CALIBRATED_CAM = false;
