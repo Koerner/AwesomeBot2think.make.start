@@ -4,6 +4,7 @@
 #include <QObject>
 
 #include <opencv2/opencv.hpp>
+#include <OVR.h>
 
 // Forward declaration
 class Cam;

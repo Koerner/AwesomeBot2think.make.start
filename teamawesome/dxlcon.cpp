@@ -14,6 +14,8 @@ DxlCon::DxlCon(QObject *parent) :
     connect(socket, SIGNAL(connected()), this, SLOT(slotConnected()));
 
     socket->connectToHost(host, port);
+    setDxl(CAM_YAW,TORQUE_LIMIT,1023);
+    setDxl(CAM_YAW,POS, 2048);
 }
 
 DxlCon::~DxlCon()
@@ -22,14 +24,25 @@ DxlCon::~DxlCon()
     delete socket;
 }
 
-void DxlCon::setDxlPos(double yaw,double pitch,double roll)
+void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
 {
-    this->setDxlPos(DxlCon::YAW, yaw);
-    this->setDxlPos(DxlCon::PITCH, pitch);
-    this->setDxlPos(DxlCon::ROLL, roll);
+    this->setDxlPos(DxlCon::CAM_YAW, yaw);
+    this->setDxlPos(DxlCon::CAM_PITCH, pitch);
+    this->setDxlPos(DxlCon::CAM_ROLL, roll);
     return;
 }
 
+void DxlCon::setDxlInter(double yaw, double pitch)
+{
+    this->setDxlPos(DxlCon::NERF_YAW, yaw);
+    this->setDxlPos(DxlCon::NERF_PITCH, pitch);
+    return;
+}
+
+void DxlCon::setDxlTrig()
+{
+    return;
+}
 
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
@@ -42,6 +55,12 @@ void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 
 void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
 {
+    if(id == 20 && cmd == 30 && val > 2400) val = 2400;
+    if(id == 20 && cmd == 30 && val < 800) val = 800;
+    if(id == 30 && cmd == 30 && val < 1500) val = 1500;
+    if(id == 30 && cmd == 30 && val > 2700) val = 2700;
+
+
     QString strId = QString::number(id);
     QString strAddr = QString::number(cmd);
     QString strVal = QString::number(val);

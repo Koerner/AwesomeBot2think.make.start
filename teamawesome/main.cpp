@@ -42,9 +42,13 @@ int main (int argc, char** argv) {
 
         // Dynamixel Ansteuerung
         DxlCon dxlCon;
-        dxlCon.setDxlPos(DxlCon::YAW, 0);
-        dxlCon.setDxlPos(DxlCon::ROLL, 0);
-        dxlCon.setDxlPos(DxlCon::PITCH, 0);
+        dxlCon.setDxlPos(DxlCon::CAM_YAW, 0);
+        dxlCon.setDxlPos(DxlCon::CAM_ROLL, 0);
+        dxlCon.setDxlPos(DxlCon::CAM_PITCH, 0);
+
+        dxlCon.setDxlPos(DxlCon::NERF_PITCH, 0);
+        dxlCon.setDxlPos(DxlCon::NERF_YAW, 0);
+        dxlCon.setDxlPos(DxlCon::NERF_TRIGGER, 0);
 
 //        std::cout << "dxl fertig" << std::endl;
 
@@ -94,11 +98,13 @@ int main (int argc, char** argv) {
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
-        QObject::connect(&joystick, SIGNAL(setView(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
+        QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setInterPos(double,double)));
 
         // Oculus Sensoren
         OculusSensor oculus;
-        QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)), &dxlCon, SLOT(setDxlPos(double,double,double)));
+        QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)), &dxlCon, SLOT(setDxlCamera(double,double,double)));
+        QObject::connect(&oculus, SIGNAL(signalRobotData(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
+        QObject::connect(&joystick, SIGNAL(buttonB(bool)), &oculus, SLOT(slotbuttonB(bool)));
 
         // Joystick loop starten
         QMetaObject::invokeMethod(&joystick, "run");
