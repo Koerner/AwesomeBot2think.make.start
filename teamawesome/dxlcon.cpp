@@ -61,6 +61,8 @@ void DxlCon::resetDxlTrig()
 }
 
 
+
+
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {
     while(angleDeg < 0) angleDeg += 360.0;
