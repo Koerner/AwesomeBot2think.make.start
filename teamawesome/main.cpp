@@ -57,17 +57,17 @@ int main (int argc, char** argv) {
         dxlCon.setNerfMotor(100);
         QThread::msleep(1000);
 
-        forever {
-            dxlCon.setNerfMotor(33);
-            QThread::msleep(3000);
+//        forever {
+//            dxlCon.setNerfMotor(33);
+//            QThread::msleep(3000);
 
-            dxlCon.setNerfMotor(100);
-            QThread::msleep(500);
+//            dxlCon.setNerfMotor(100);
+//            QThread::msleep(500);
 
-            dxlCon.setDxlTrig();
-            QThread::msleep(500);
+//            dxlCon.setDxlTrig();
+//            QThread::msleep(500);
 
-        }
+//        }
 
 
         // Cam3D erstellen

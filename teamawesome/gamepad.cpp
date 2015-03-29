@@ -56,6 +56,11 @@ void Gamepad::run()
         Q_SIGNAL setTrig();
     }
 
+    if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_X) == true)
+    {
+        //Q_SIGNAL startNerf();
+    }
+
     Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
 
 
