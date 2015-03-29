@@ -10,14 +10,20 @@
 #include <phidget21.h>
 
 const int TcpServer::port = 50000;
-const int TcpServer::dxlIndex = 0;
+const int TcpServer::phidgetTimeout = 1000;
 const int TcpServer::dxlBaud = 34; // 57k6 Bd
 
 TcpServer::TcpServer(QObject *parent) :
     QObject(parent)
 {
+    qDebug() << "Team Awesome's RobotServer, version" << BUILDDATE << BUILDTIME;
+
     // Dynamixel init
-    int r = dxl_initialize(dxlIndex, dxlBaud);
+    int index = 0, r = 0;
+    while( r==0 && index < 5)
+    {
+        r = dxl_initialize(index++, dxlBaud);
+    }
     if(r == 0)
     {
         qCritical() << "Could not initialize dynamixel.";
@@ -29,7 +35,7 @@ TcpServer::TcpServer(QObject *parent) :
     CPhidget_open((CPhidgetHandle) motor, -1);
     int result;
     const char* err;
-    if((result = CPhidget_waitForAttachment((CPhidgetHandle) motor, 10000)))
+    if((result = CPhidget_waitForAttachment((CPhidgetHandle) motor, phidgetTimeout)))
     {
         CPhidget_getErrorDescription(result, &err);
         qCritical() << "Problem waiting for motor attachment:" << err;
@@ -133,6 +139,7 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
     // Phidget Motor Controller gets ID 1000
     if(id == 1000)
     {
+        qDebug() << "Set Phidget Motor" << addr << "to" << val;
         CPhidgetMotorControl_setVelocity (motor, addr, val);
         return OK;
     }
