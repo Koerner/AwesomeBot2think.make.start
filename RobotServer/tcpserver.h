@@ -17,7 +17,7 @@ public:
     ~TcpServer();
 
     static const int port;
-    static const int dxlIndex, dxlBaud;
+    static const int phidgetTimeout, dxlBaud;
 
 signals:
 
