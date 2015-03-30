@@ -42,27 +42,11 @@ private:
 #define  CRC8_POLYNOMIAL   0xA6
 #define CRC8_INITIAL_VALUE 0xAA
 
+    static const char CMD[NUM_CMDS][10];
+    static const int LEN[NUM_CMDS];
     static const int RET_NOERR         = 1;
     static const int RET_ERR_TIMEOUT   =-1;
     static const int RET_ERR_STATUS    =-2;
-
-    char CMD[NUM_CMDS][10] = {
-      "\xC0\x41\x00",
-      "\xC0\x42\x00",
-      "\xC0\x40\x01\x00",
-      "\xC0\x40\x01\x01",
-      "\xC0\x40\x01\x0D",
-      "\xC0\x40\x01\x02"
-    };
-
-    int LEN[NUM_CMDS] = {
-      3,
-      3,
-      4,
-      4,
-      4,
-      4
-    };
 
     unsigned char CalcCrc8FromArray(const unsigned char *pData, unsigned short NumBytes, unsigned char InitialValue);
     unsigned char CalcCrc8(unsigned char Data, unsigned char InitialValue);

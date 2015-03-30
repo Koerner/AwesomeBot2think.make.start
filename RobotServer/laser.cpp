@@ -3,6 +3,23 @@
 #include <QtCore>
 #include <SerialStream.h>
 
+const char Laser::CMD[Laser::NUM_CMDS][10] = {
+  "\xC0\x41\x00",
+  "\xC0\x42\x00",
+  "\xC0\x40\x01\x00",
+  "\xC0\x40\x01\x01",
+  "\xC0\x40\x01\x0D",
+  "\xC0\x40\x01\x02"
+};
+
+const int Laser::LEN[Laser::NUM_CMDS] = {
+  3,
+  3,
+  4,
+  4,
+  4,
+  4
+};
 
 Laser::Laser(QString path, QObject *parent) :
     QObject(parent)
@@ -87,8 +104,10 @@ unsigned char Laser::CalcCrc8FromArray(const unsigned char* pData, unsigned shor
 //***************************************************************************
 int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
 {
+    Q_UNUSED(rxbytes);
+
     int status, length, txbytes;
-    char sum, command[30], temp;
+    char sum, command[30];
 
 //    port->flush();
 
