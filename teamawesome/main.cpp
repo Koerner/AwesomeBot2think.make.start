@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include <QtCore>
+#include <QtTest/QtTest>
 #include <QApplication>
 
 #include <rec/robotino/api2/all.h>
@@ -54,7 +55,8 @@ int main (int argc, char** argv) {
 
         // Nerf Motor
         dxlCon.setNerfMotor(100);
-        QThread::msleep(1000);
+        //QThread::msleep(1000);
+        QTest::qSleep(1000);
         dxlCon.setNerfMotor(20);
 
         // Cam3D erstellen
