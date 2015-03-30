@@ -39,6 +39,7 @@ private:
     CPhidgetMotorControlHandle motor;
 
     InterpreterSuccess interpretLine(QString line);
+    int play(QString filename);
 
     QTimer* timer;
     bool timedout;

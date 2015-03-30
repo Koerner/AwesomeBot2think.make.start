@@ -68,6 +68,12 @@ void DxlCon::setNerfMotor(const int val)
     setDxl(DxlCon::NERF_MOTOR, DxlCon::SET_NERF_MOT, motVal);
 }
 
+void DxlCon::playAudio(const int audioID)
+{
+    qDebug() << "Play Audio #" << audioID;
+    setDxl(DxlCon::AUDIO, DxlCon::DONTCARE, audioID);
+}
+
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {

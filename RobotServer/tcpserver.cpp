@@ -166,6 +166,29 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
         return OK;
     }
 
+    // Audio Control
+    if(id == 2000)
+    {
+        qDebug() << "Playing audio file #" << val;
+        switch (val)
+        {
+        case 1:
+            play("hello.wav");
+            break;
+        case 2:
+            play("awesome.wav");
+            break;
+        case 3:
+            play("back.wav");
+            break;
+        case 4:
+            play("eatshit.wav");
+            break;
+        default:
+            qWarning() << "unknown audio file index";
+        }
+    }
+
     qDebug() << "Got id" << id << ", addr" << addr << ", val" << val;
 
     dxl_write_word(id, addr, val);
@@ -190,4 +213,12 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
 
 
     return OK;
+}
+
+int TcpServer::play(QString filename)
+{
+    QString cmd("aplay \"/home/robotino/audio/");
+    cmd.append(filename);
+    cmd.append("\" &");
+    return system(cmd.toStdString().c_str());
 }
