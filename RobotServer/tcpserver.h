@@ -8,6 +8,7 @@
 class QTcpServer;
 class QAbstractSocket;
 class QByteArray;
+class QTimer;
 
 class TcpServer : public QObject
 {
@@ -17,13 +18,16 @@ public:
     ~TcpServer();
 
     static const int port;
-    static const int phidgetTimeout, dxlBaud;
+    static const int phidgetTimeout;
+    static const int dxlBaud;
+    static const int timeout;
 
 signals:
 
 private slots:
     void slotNewConnection();
     void slotReadyRead();
+    void slotTimeout();
 
 private:
     enum InterpreterSuccess {OK, WRONG, UNFINISHED};
@@ -35,6 +39,10 @@ private:
     CPhidgetMotorControlHandle motor;
 
     InterpreterSuccess interpretLine(QString line);
+    int play(QString filename);
+
+    QTimer* timer;
+    bool timedout;
 
 };
 

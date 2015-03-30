@@ -11,6 +11,7 @@
 
 const int TcpServer::port = 50000;
 const int TcpServer::phidgetTimeout = 1000;
+const int TcpServer::timeout = 5000;
 const int TcpServer::dxlBaud = 34; // 57k6 Bd
 
 TcpServer::TcpServer(QObject *parent) :
@@ -39,12 +40,14 @@ TcpServer::TcpServer(QObject *parent) :
     {
         CPhidget_getErrorDescription(result, &err);
         qCritical() << "Problem waiting for motor attachment:" << err;
+        motor = NULL;
 //        exit (1);
     }
 
     // TCP Stream buffers init
     buffer = new QByteArray();
     server = new QTcpServer;
+    connect(server, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
     if(!server->listen(QHostAddress::Any, port))
     {
         qCritical() << "Could not start TCP server.";
@@ -52,11 +55,16 @@ TcpServer::TcpServer(QObject *parent) :
     }
     qDebug() << "Server started on port:" << server->serverPort();
 
-    connect(server, SIGNAL(newConnection()), this, SLOT(slotNewConnection()));
+    timer = new QTimer;
+    timer->setSingleShot(true);
+    connect(timer, SIGNAL(timeout()), this, SLOT(slotTimeout()));
+    timer->start(timeout);
+    timedout = true;
 }
 
 TcpServer::~TcpServer()
 {
+    delete timer;
     delete server;
     delete buffer;
     CPhidget_close((CPhidgetHandle) motor);
@@ -83,6 +91,7 @@ void TcpServer::slotReadyRead()
         InterpreterSuccess ok = interpretLine(list.first());
         if(ok == OK || ok == WRONG)
         {
+            timer->start(timeout);
             list.removeFirst();
         } else if(ok == UNFINISHED) {
             break;
@@ -93,6 +102,19 @@ void TcpServer::slotReadyRead()
     {
         buffer->append(QByteArray(listElement.toStdString().c_str()));
     }
+}
+
+void TcpServer::slotTimeout()
+{
+    qDebug() << "Timeout: Shut down Phidget Motors";
+    if(motor)
+    {
+        CPhidgetMotorControl_setVelocity (motor, 0, 0);
+        CPhidgetMotorControl_setVelocity (motor, 1, 0);
+    }
+    dxl_write_word(254, 34, 0); // Broadcast: All dynamixels loose torque
+    timedout = true;
+
 }
 
 TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
@@ -144,9 +166,38 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
         return OK;
     }
 
+    // Audio Control
+    if(id == 2000)
+    {
+        qDebug() << "Playing audio file #" << val;
+        switch (val)
+        {
+        case 1:
+            play("hello.wav");
+            break;
+        case 2:
+            play("awesome.wav");
+            break;
+        case 3:
+            play("back.wav");
+            break;
+        case 4:
+            play("eatshit.wav");
+            break;
+        default:
+            qWarning() << "unknown audio file index";
+        }
+    }
+
     qDebug() << "Got id" << id << ", addr" << addr << ", val" << val;
 
     dxl_write_word(id, addr, val);
+    if(timedout && addr != 34)
+    {
+        dxl_write_word(254, 34, 1023); // Broadcast: Set max torque
+        timedout = false;
+    }
+
     int result = dxl_get_result();
     if( result == COMM_TXSUCCESS || result == COMM_RXSUCCESS )
     {
@@ -162,4 +213,12 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
 
 
     return OK;
+}
+
+int TcpServer::play(QString filename)
+{
+    QString cmd("aplay \"/home/robotino/audio/");
+    cmd.append(filename);
+    cmd.append("\" &");
+    return system(cmd.toStdString().c_str());
 }
