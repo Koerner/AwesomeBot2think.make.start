@@ -45,6 +45,7 @@ void DxlCon::setDxlTrig()
 {
     if(triggerReset)
     {
+        std::cout << "shot"<<std::endl;
         this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
         QTimer::singleShot(50,this,SLOT(resetDxlTrig));
         triggerReset = false;
@@ -58,6 +59,13 @@ void DxlCon::resetDxlTrig()
     this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
     triggerReset = true;
     return;
+}
+
+void DxlCon::setNerfMotor(const int val)
+{
+    int motVal = 0;
+    if(val >= 0 && val <= 100) motVal = val;
+    setDxl(DxlCon::NERF_MOTOR, DxlCon::SET_NERF_MOT, motVal);
 }
 
 

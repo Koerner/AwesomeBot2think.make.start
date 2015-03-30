@@ -37,8 +37,7 @@ int main (int argc, char** argv) {
             rec::robotino::api2::shutdown();
             exit(1);
         }
-        std::cout << "connected." << std::endl;
-
+        std::cout << "Connected." << std::endl;
 
         // Dynamixel Ansteuerung
         DxlCon dxlCon;
@@ -52,6 +51,8 @@ int main (int argc, char** argv) {
 
         // Nerf Motor
         dxlCon.setNerfMotor(100);
+        QThread::msleep(1000);
+        dxlCon.setNerfMotor(20);
 
         // Cam3D erstellen
         QThread threadCam;
@@ -75,12 +76,15 @@ int main (int argc, char** argv) {
         // Driving Control of the Robotino
         RobotinoControl robotinoControl;
         QObject::connect(&joystick, SIGNAL(setCarLike(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
-        QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setInterPos(double,double)));
+        //QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setDxlInter(double,double)));
         QObject::connect(&joystick, SIGNAL(setTrig()), &dxlCon, SLOT(setDxlTrig()));
+        QObject::connect(&joystick, SIGNAL(startNerf(int)),&dxlCon, SLOT(setNerfMotor(int)));
+
 
         // Oculus Sensoren
         OculusSensor oculus;
         QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)), &dxlCon, SLOT(setDxlCamera(double,double,double)));
+        QObject::connect(&oculus, SIGNAL(signalSensorData(double,double,double)),&dxlCon, SLOT(setDxlInter(double,double,double)));
         QObject::connect(&oculus, SIGNAL(signalRobotData(double,double,double)), &robotinoControl, SLOT(setCarLike(double,double,double)));
         QObject::connect(&joystick, SIGNAL(buttonB(bool)), &oculus, SLOT(slotbuttonB(bool)));
 
