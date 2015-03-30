@@ -99,6 +99,14 @@ void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
     if(id == 30 && cmd == 30 && val < 1500) val = 1500;
     if(id == 30 && cmd == 30 && val > 2700) val = 2700;
 
+    if( !dxlTempVal.contains(id) )
+    {
+        dxlTempVal[id] = val;
+    } else if( val != dxlTempVal[id] ) {
+        dxlTempVal[id] = val;
+    } else {
+        return; // no change of value, so don't send anything
+    }
 
     QString strId = QString::number(id);
     QString strAddr = QString::number(cmd);

@@ -2,6 +2,7 @@
 #define DXLCON_H
 
 #include <QObject>
+#include <QHash>
 
 class QTcpSocket;
 
@@ -46,6 +47,8 @@ private:
 
     int resetTime;
     bool triggerReset;
+
+    QHash <int,int> dxlTempVal;
 
 
 };
