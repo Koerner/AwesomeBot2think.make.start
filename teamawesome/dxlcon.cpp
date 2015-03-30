@@ -89,6 +89,11 @@ void DxlCon::playAudio(const int audioID)
     setDxl(DxlCon::AUDIO, DxlCon::DONTCARE, audioID);
 }
 
+void DxlCon::playAwesome(bool play)
+{
+    if(play) playAudio(DxlCon::AUDIO_AWESOME);
+}
+
 
 void DxlCon::setDxlPos(DxlCon::DxlId id, double angleDeg)
 {

@@ -68,6 +68,7 @@ void Gamepad::run()
 
     Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
 
+    emit buttonXbox(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_XBOX));
 
 
     return;
