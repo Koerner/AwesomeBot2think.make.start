@@ -1,15 +1,15 @@
 #include "laser.h"
 
 #include <QtCore>
-#include <QtSerialPort/QSerialPort>
+#include <SerialStream.h>
 
 
-Laser::Laser(QObject *parent) :
+Laser::Laser(QString path, QObject *parent) :
     QObject(parent)
 {
-    port = new QSerialPort("/dev/ttyACM0");
-    port->open(QIODevice::ReadWrite);
-    port->setBaudRate(9600);
+
+    port = new SerialPort(path.toStdString());
+    port->Open(SerialPort::BAUD_9600);
 }
 
 Laser::~Laser()
@@ -19,18 +19,18 @@ Laser::~Laser()
 
 void Laser::laserOn()
 {
-    laser.SendCommand(Laser::LASERON, NULL, 0, 1000);
+    SendCommand(Laser::LASERON, NULL, 0, 1000);
 }
 
 void Laser::laserOff()
 {
-    laser.SendCommand(Laser::LASEROFF, NULL, 0, 1000);
+    SendCommand(Laser::LASEROFF, NULL, 0, 1000);
 }
 
 double Laser::measure()
 {
     double val = -1;
-    laser.MeasureDistance (&val, Laser::MEAS_NORMAL);
+    MeasureDistance (&val, Laser::MEAS_NORMAL);
     return val;
 }
 
@@ -90,19 +90,20 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     int status, length, txbytes;
     char sum, command[30], temp;
 
-    port->flush();
+//    port->flush();
 
     memcpy ( command, CMD[cmd], LEN[cmd] );
     txbytes = LEN[cmd];
 
     // Calculate Checksum during sending of bytes
     sum = CalcCrc8FromArray ( (unsigned char*) command, txbytes, CRC8_INITIAL_VALUE );
-    port->write(command, txbytes);
-    port->write(&sum, 1);
+    SerialPort::DataBuffer txBuf(command, command+txbytes);
+    port->Write(txBuf);
+    port->WriteByte(sum);
 
     QElapsedTimer timer;
     timer.start();
-    while(port->bytesAvailable() == 0 && timer.elapsed() < timeout)
+    while(port->IsDataAvailable() == 0 && timer.elapsed() < timeout)
     {
         QThread::msleep(10);
     }
@@ -110,12 +111,11 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     qDebug() << "Command sent";
 
     // timeout occured
-    if (port->bytesAvailable() == 0)
+    if (port->IsDataAvailable() == 0)
         return RET_ERR_TIMEOUT;
 
     // collect status byte
-    port->read(&temp, 1);
-    status = temp;
+    status = port->ReadByte();
     // check status
     if (status != 0)
     {
@@ -125,16 +125,17 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     }
 
     // get response length
-    port->read(&temp, 1);
-    length = temp;
+    length = port->ReadByte();
 
     // wait until answer is received:
     timer.start();
-    while(port->bytesAvailable() < length+1  && timer.elapsed() < timeout)
+    while(port->IsDataAvailable() < length+1  && timer.elapsed() < timeout)
     {
         QThread::msleep(10);
     }
-    port->read(rx, length);
+    SerialPort::DataBuffer rxBuf(length, 0); //<length> chars with value 0
+    port->Read(rxBuf);
+    memcpy(rx, rxBuf.data(), rxBuf.size());
 
     qDebug() << "Received reply";
 

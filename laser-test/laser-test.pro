@@ -1,4 +1,4 @@
-QT += serialport
+LIBS += -lserial
 
 SOURCES += \
     main.cpp \

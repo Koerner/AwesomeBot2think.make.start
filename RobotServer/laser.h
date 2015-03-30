@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class SerialPort;
+class QSerialPort;
 
 class Laser : public QObject
 {
@@ -37,7 +37,7 @@ signals:
 public slots:
 
 private:
-    SerialPort* port;
+    QSerialPort* port;
 
 #define  CRC8_POLYNOMIAL   0xA6
 #define CRC8_INITIAL_VALUE 0xAA

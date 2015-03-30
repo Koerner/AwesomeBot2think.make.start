@@ -9,6 +9,7 @@ class QTcpServer;
 class QAbstractSocket;
 class QByteArray;
 class QTimer;
+class Laser;
 
 class TcpServer : public QObject
 {
@@ -43,6 +44,8 @@ private:
 
     QTimer* timer;
     bool timedout;
+
+    Laser* laser;
 
 };
 

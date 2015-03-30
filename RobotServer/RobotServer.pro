@@ -2,7 +2,7 @@
 TARGET = robotserver
 TEMPLATE = app
 
-QT += core network
+QT += core network serialport
 
 LIBS += -ldxl
 LIBS += -lphidget21
@@ -12,7 +12,9 @@ DEFINES += BUILDDATE=\\\"$$system(date '+%Y-%m-%d ')\\\"
 
 SOURCES += \
     main.cpp \
-    tcpserver.cpp
+    tcpserver.cpp \
+    laser.cpp
 
 HEADERS += \
-    tcpserver.h
+    tcpserver.h \
+    laser.h

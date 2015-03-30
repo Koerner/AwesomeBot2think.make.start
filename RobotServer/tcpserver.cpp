@@ -9,6 +9,8 @@
 
 #include <phidget21.h>
 
+#include "laser.h"
+
 const int TcpServer::port = 50000;
 const int TcpServer::phidgetTimeout = 1000;
 const int TcpServer::timeout = 5000;
@@ -18,6 +20,10 @@ TcpServer::TcpServer(QObject *parent) :
     QObject(parent)
 {
     qDebug() << "Team Awesome's RobotServer, version" << BUILDDATE << BUILDTIME;
+
+    laser = new Laser;
+    laser->laserOn();
+
 
     // Dynamixel init
     int index = 0, r = 0;

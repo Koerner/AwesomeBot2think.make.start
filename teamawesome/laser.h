@@ -3,13 +3,13 @@
 
 #include <QObject>
 
-class QSerialPort;
+class SerialPort;
 
 class Laser : public QObject
 {
     Q_OBJECT
 public:
-    explicit Laser(QObject *parent = 0);
+    explicit Laser(QString path = "/dev/ttyACM0", QObject *parent = 0);
     ~Laser();
 
     // commands:
@@ -37,7 +37,7 @@ signals:
 public slots:
 
 private:
-    QSerialPort* port;
+    SerialPort* port;
 
 #define  CRC8_POLYNOMIAL   0xA6
 #define CRC8_INITIAL_VALUE 0xAA

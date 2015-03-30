@@ -1,15 +1,15 @@
 #include "laser.h"
 
 #include <QtCore>
-#include <SerialStream.h>
+#include <QtSerialPort/QSerialPort>
 
 
 Laser::Laser(QString path, QObject *parent) :
     QObject(parent)
 {
-
-    port = new SerialPort(path.toStdString());
-    port->Open(SerialPort::BAUD_9600);
+    port = new QSerialPort(path);
+    port->open(QIODevice::ReadWrite);
+    port->setBaudRate(9600);
 }
 
 Laser::~Laser()
@@ -90,20 +90,19 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     int status, length, txbytes;
     char sum, command[30], temp;
 
-//    port->flush();
+    port->flush();
 
     memcpy ( command, CMD[cmd], LEN[cmd] );
     txbytes = LEN[cmd];
 
     // Calculate Checksum during sending of bytes
     sum = CalcCrc8FromArray ( (unsigned char*) command, txbytes, CRC8_INITIAL_VALUE );
-    SerialPort::DataBuffer txBuf(command, command+txbytes);
-    port->Write(txBuf);
-    port->WriteByte(sum);
+    port->write(command, txbytes);
+    port->write(&sum, 1);
 
     QElapsedTimer timer;
     timer.start();
-    while(port->IsDataAvailable() == 0 && timer.elapsed() < timeout)
+    while(port->bytesAvailable() == 0 && timer.elapsed() < timeout)
     {
         QThread::msleep(10);
     }
@@ -111,11 +110,12 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     qDebug() << "Command sent";
 
     // timeout occured
-    if (port->IsDataAvailable() == 0)
+    if (port->bytesAvailable() == 0)
         return RET_ERR_TIMEOUT;
 
     // collect status byte
-    status = port->ReadByte();
+    port->read(&temp, 1);
+    status = temp;
     // check status
     if (status != 0)
     {
@@ -125,17 +125,16 @@ int Laser::SendCommand(COMMANDS cmd, char *rx, int rxbytes, int timeout)
     }
 
     // get response length
-    length = port->ReadByte();
+    port->read(&temp, 1);
+    length = temp;
 
     // wait until answer is received:
     timer.start();
-    while(port->IsDataAvailable() < length+1  && timer.elapsed() < timeout)
+    while(port->bytesAvailable() < length+1  && timer.elapsed() < timeout)
     {
         QThread::msleep(10);
     }
-    SerialPort::DataBuffer rxBuf(length, 0); //<length> chars with value 0
-    port->Read(rxBuf);
-    memcpy(rx, rxBuf.data(), rxBuf.size());
+    port->read(rx, length);
 
     qDebug() << "Received reply";
 
