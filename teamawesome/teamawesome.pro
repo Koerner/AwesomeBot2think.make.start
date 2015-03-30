@@ -9,7 +9,6 @@ LIBS += -lsfml-graphics -lsfml-window -lsfml-system
 LIBS += -lopencv_core -lopencv_imgproc -lopencv_highgui
 LIBS += -lovr -lrt -lXrandr -lGL -lXxf86vm -lpthread -lX11
 LIBS += -laruco
-LIBS += -lserial
 
 
 SOURCES += \
@@ -20,8 +19,7 @@ SOURCES += \
     gamepad.cpp \
     renderwindow.cpp \
     dxlcon.cpp \
-    oculussensor.cpp \
-    laser.cpp
+    oculussensor.cpp
 
 
 HEADERS += \
@@ -32,8 +30,7 @@ HEADERS += \
     gamepad.h \
     renderwindow.h \
     dxlcon.h \
-    oculussensor.h \
-    laser.h
+    oculussensor.h
 
 FORMS    +=
 

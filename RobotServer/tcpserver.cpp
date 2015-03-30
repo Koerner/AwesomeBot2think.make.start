@@ -21,9 +21,13 @@ TcpServer::TcpServer(QObject *parent) :
 {
     qDebug() << "Team Awesome's RobotServer, version" << BUILDDATE << BUILDTIME;
 
-    laser = new Laser;
-    laser->laserOn();
-
+    // Laser einschalten
+    try {
+        laser = new Laser;
+        laser->laserOn();
+    } catch (...) {
+        qWarning() << "laser error";
+    }
 
     // Dynamixel init
     int index = 0, r = 0;

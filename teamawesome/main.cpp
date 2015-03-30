@@ -40,9 +40,6 @@ int main (int argc, char** argv) {
         }
         std::cout << "Connected." << std::endl;
 
-        // Laser einschalten
-        Laser laser;
-        laser.laserOn();
 
         // Robot Server Verbidnung / Dynamixel Ansteuerung
         DxlCon dxlCon;

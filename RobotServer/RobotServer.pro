@@ -2,10 +2,11 @@
 TARGET = robotserver
 TEMPLATE = app
 
-QT += core network serialport
+QT += core network
 
 LIBS += -ldxl
 LIBS += -lphidget21
+LIBS += -lserial
 
 DEFINES += BUILDTIME=\\\"$$system(date '+%H:%M')\\\"
 DEFINES += BUILDDATE=\\\"$$system(date '+%Y-%m-%d ')\\\"
