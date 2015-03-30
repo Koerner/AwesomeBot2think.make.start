@@ -41,6 +41,9 @@ int main (int argc, char** argv) {
 
         // Dynamixel Ansteuerung
         DxlCon dxlCon;
+
+        dxlCon.playAudio(DxlCon::AUDIO_HELLO);
+
         dxlCon.setDxlPos(DxlCon::CAM_YAW, 0);
         dxlCon.setDxlPos(DxlCon::CAM_ROLL, 0);
         dxlCon.setDxlPos(DxlCon::CAM_PITCH, 0);
