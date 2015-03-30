@@ -16,6 +16,7 @@
 #include "renderwindow.h"
 #include "dxlcon.h"
 #include "oculussensor.h"
+#include "laser.h"
 
 // Global pointers
 Com* com;
@@ -40,6 +41,9 @@ int main (int argc, char** argv) {
         }
         std::cout << "Connected." << std::endl;
 
+        // Laser einschalten
+        Laser laser;
+        laser.laserOn();
 
         // Robot Server Verbidnung / Dynamixel Ansteuerung
         DxlCon dxlCon;

@@ -1,4 +1,4 @@
-QT       += core network gui widgets testlib
+QT       += core network gui widgets testlib serialport
 
 TARGET = teamawesome
 TEMPLATE = app
@@ -19,7 +19,8 @@ SOURCES += \
     gamepad.cpp \
     renderwindow.cpp \
     dxlcon.cpp \
-    oculussensor.cpp
+    oculussensor.cpp \
+    laser.cpp
 
 
 HEADERS += \
@@ -31,7 +32,8 @@ HEADERS += \
     gamepad.h \
     renderwindow.h \
     dxlcon.h \
-    oculussensor.h
+    oculussensor.h \
+    laser.h
 
 FORMS    += mainwindow.ui
 
