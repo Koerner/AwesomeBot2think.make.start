@@ -11,7 +11,6 @@ LIBS += -lovr -lrt -lXrandr -lGL -lXxf86vm -lpthread -lX11
 LIBS += -laruco
 
 SOURCES += \
-    mainwindow.cpp \
     main.cpp \
     cam.cpp \
     cam3d.cpp \
@@ -24,7 +23,6 @@ SOURCES += \
 
 
 HEADERS += \
-    mainwindow.h \
     com.h \
     cam.h \
     cam3d.h \
@@ -35,7 +33,7 @@ HEADERS += \
     oculussensor.h \
     laser.h
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     AR_images.qrc

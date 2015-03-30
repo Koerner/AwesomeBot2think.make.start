@@ -19,18 +19,18 @@ Laser::~Laser()
 
 void Laser::laserOn()
 {
-    laser.SendCommand(Laser::LASERON, NULL, 0, 1000);
+    SendCommand(Laser::LASERON, NULL, 0, 1000);
 }
 
 void Laser::laserOff()
 {
-    laser.SendCommand(Laser::LASEROFF, NULL, 0, 1000);
+    SendCommand(Laser::LASEROFF, NULL, 0, 1000);
 }
 
 double Laser::measure()
 {
     double val = -1;
-    laser.MeasureDistance (&val, Laser::MEAS_NORMAL);
+    MeasureDistance (&val, Laser::MEAS_NORMAL);
     return val;
 }
 
