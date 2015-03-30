@@ -110,7 +110,7 @@ void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
         dxlTempVal[id] = val;
     } else if( val != dxlTempVal[id] ) {
         dxlTempVal[id] = val;
-    } else {
+    } else if( id != DxlCon::IDLE) {
         return; // no change of value, so don't send anything
     }
 
