@@ -17,6 +17,9 @@ DxlCon::DxlCon(QObject *parent) :
     setDxl(CAM_YAW,TORQUE_LIMIT,1023);
     setDxl(CAM_YAW,POS, 2048);
 
+    resetTime = 300;
+    triggerReset = true;
+
     this->resetDxlTrig();
 }
 
@@ -34,7 +37,7 @@ void DxlCon::setDxlCamera(double yaw,double pitch,double roll)
     return;
 }
 
-void DxlCon::setDxlInter(double yaw, double pitch)
+void DxlCon::setDxlInter(double yaw, double pitch, double roll)
 {
     this->setDxlPos(DxlCon::NERF_YAW, yaw);
     this->setDxlPos(DxlCon::NERF_PITCH, pitch);
@@ -45,9 +48,9 @@ void DxlCon::setDxlTrig()
 {
     if(triggerReset)
     {
-        std::cout << "shot"<<std::endl;
-        this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1400);
-        QTimer::singleShot(50,this,SLOT(resetDxlTrig));
+        //std::cout << "shot"<<std::endl;
+        this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 1300);
+        QTimer::singleShot(resetTime,this,SLOT(resetDxlTrig()));
         triggerReset = false;
     }
 
@@ -57,6 +60,12 @@ void DxlCon::setDxlTrig()
 void DxlCon::resetDxlTrig()
 {
     this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
+    QTimer::singleShot(resetTime,this,SLOT(resetTrig()));
+return;
+}
+
+void DxlCon::resetTrig()
+{
     triggerReset = true;
     return;
 }
@@ -64,7 +73,7 @@ void DxlCon::resetDxlTrig()
 void DxlCon::setNerfMotor(const int val)
 {
     int motVal = 0;
-    if(val >= 0 && val <= 100) motVal = val;
+    if(val >= 0 && val <= 100) motVal = val/2;
     setDxl(DxlCon::NERF_MOTOR, DxlCon::SET_NERF_MOT, motVal);
 }
 

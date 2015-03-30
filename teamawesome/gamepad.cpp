@@ -4,7 +4,7 @@
 
 const double Gamepad::m_speedScaling = 0.0025;
 const double Gamepad::m_rotationScaling = 0.01;
-const double Gamepad::m_interactionScaling = 0.01;
+const double Gamepad::m_interactionScaling = 0.3;
 const double Gamepad::m_joystickThreshold = 15;
 const double Gamepad::m_viewScaling = 1;
 
@@ -42,23 +42,28 @@ void Gamepad::run()
         if(fabs(joystick_v) < m_joystickThreshold) {joystick_v = 0;}
 
 
-        Q_SIGNAL setInteraction(-1*m_interactionScaling*joystick_u,-1*m_interactionScaling*joystick_v);
+        //Q_SIGNAL setInteraction(-1*m_interactionScaling*joystick_u,-1*m_interactionScaling*joystick_v);
         Q_SIGNAL setCarLike(-1 * m_speedScaling * joystick_y, -1 * m_speedScaling * joystick_x, m_rotationScaling * (sf::Joystick::getAxisPosition(0,sf::Joystick::Z)- sf::Joystick::getAxisPosition(0,sf::Joystick::R)));
     }
     else
     {
-        Q_SIGNAL setInteraction(0,0);
+        //Q_SIGNAL setInteraction(0,0);
         Q_SIGNAL setCarLike(0,0,0);
     }
 
     if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_RB) == true)
     {
+        //std::cout << "SHOOT" << std::endl;
         Q_SIGNAL setTrig();
     }
 
     if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_X) == true)
     {
-        //Q_SIGNAL startNerf();
+        Q_SIGNAL startNerf(100);
+    }
+    else
+    {
+        Q_SIGNAL startNerf(20);
     }
 
     Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));

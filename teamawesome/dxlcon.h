@@ -21,10 +21,10 @@ public:
 signals:
 
 public slots:
-    void setDxlInter(double yaw, double pitch);
+    void setDxlInter(double yaw, double pitch, double roll);
 
     void setDxlTrig();
-    void resetDxlTrig();
+
 
     void setNerfMotor(const int val);
 
@@ -35,10 +35,13 @@ public slots:
 
 private slots:
     void slotConnected();
+    void resetDxlTrig();
+    void resetTrig();
 
 private:
     QTcpSocket *socket;
 
+    int resetTime;
     bool triggerReset;
 
 

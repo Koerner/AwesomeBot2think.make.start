@@ -22,7 +22,7 @@ private:
 public:
     explicit Gamepad(QObject *parent = 0);
 
-    enum Buttons {BTN_A=0,BTN_B=1,BTN_X=2,BTN_Y=3, BTN_LB=5, BTN_RB=6};
+    enum Buttons {BTN_A=0,BTN_B=1,BTN_X=2,BTN_Y=3, BTN_LB=4, BTN_RB=5};
 
 signals:
     void buttonA(bool);
@@ -37,7 +37,7 @@ signals:
     void setCarLike(double vx, double vy, double theta);
     void setInteraction(double yaw, double pitch);
     void setTrig();
-
+    void startNerf(int);
 
 public slots:
     void run();

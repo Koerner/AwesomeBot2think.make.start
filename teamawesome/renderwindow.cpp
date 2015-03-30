@@ -18,7 +18,7 @@ RenderWindow::RenderWindow(QObject *parent) :
     QObject(parent)
 {
     window = new sf::RenderWindow(sf::VideoMode(1920, 1080 ), "Team Awesome");
-    //window->setPosition(sf::Vector2i(1200,500));
+    window->setPosition(sf::Vector2i(2000,500));
     window->display();
 
 

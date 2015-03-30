@@ -14,7 +14,7 @@ double sign(double x)
 
 
 const double OculusSensor::scaleYaw = 1.0;
-const double OculusSensor::scalePitch = -1.0;
+const double OculusSensor::scalePitch = 1.0;
 const double OculusSensor::scaleRoll = 1.0;
 
 const double OculusSensor::yawThreshold = 90;
