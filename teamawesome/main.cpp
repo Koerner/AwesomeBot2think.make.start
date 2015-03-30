@@ -12,7 +12,6 @@
 #include "cam3d.h"
 #include "gamepad.h"
 #include "robotinocontrol.h"
-#include "mainwindow.h"
 #include "renderwindow.h"
 #include "dxlcon.h"
 #include "oculussensor.h"

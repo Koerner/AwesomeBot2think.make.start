@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/images">
+        <file alias="A724">AR/A724.png</file>
+        <file>AR/A725.png</file>
+        <file>AR/A726.png</file>
+        <file>AR/A727.png</file>
+    </qresource>
+</RCC>
