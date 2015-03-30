@@ -34,3 +34,6 @@ HEADERS += \
     oculussensor.h
 
 FORMS    += mainwindow.ui
+
+RESOURCES += \
+    AR_images.qrc

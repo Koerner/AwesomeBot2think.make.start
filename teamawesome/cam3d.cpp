@@ -54,9 +54,9 @@ Cam3D::~Cam3D()
 void Cam3D::slotImage(cv::Mat img, int source)
 {
     //std::cout << "got img from " << source << std::endl;
-
     cv::Mat outL(output, cv::Rect(outputWidth, 0, outputWidth, outputHeight));
     cv::Mat outR(output, cv::Rect(0, 0, outputWidth, outputHeight));
+
 
     cv::Mat temp = cv::Mat(outputHeight, outputWidth, CV_8UC3);
     cv::resize(img,temp,cv::Size(outputWidth,outputHeight));
