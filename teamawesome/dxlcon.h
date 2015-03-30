@@ -16,7 +16,7 @@ public:
     static const QString host;
     static const int port;
 
-    enum DxlId {CAM_YAW=10, CAM_ROLL=20, CAM_PITCH=30, NERF_TRIGGER=100, NERF_YAW=110, NERF_PITCH=120, NERF_MOTOR=1000, AUDIO=2000};
+    enum DxlId {CAM_YAW=10, CAM_ROLL=20, CAM_PITCH=30, NERF_TRIGGER=100, NERF_YAW=110, NERF_PITCH=120, IDLE=333, NERF_MOTOR=1000, AUDIO=2000};
     enum DxlCmd {DONTCARE=0, SET_NERF_MOT=1, POS=30, TORQUE_LIMIT=34};
     enum DxlAudioID {AUDIO_HELLO=1, AUDIO_AWESOME=2, AUDIO_BACK=3, AUDIO_EATSHIT=4};
 
@@ -27,6 +27,7 @@ public slots:
 
     void setDxlTrig();
 
+    void sendIdle();
 
     void setNerfMotor(const int val);
 

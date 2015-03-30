@@ -158,6 +158,12 @@ TcpServer::InterpreterSuccess TcpServer::interpretLine(QString line)
 
     qDebug() << "Got id" << id << ", addr" << addr << ", val" << val;
 
+    if(id == 333)
+    {
+        qDebug() << "Idle packet";
+        return OK;
+    }
+
     // Phidget Motor Controller gets ID 1000
     if(id == 1000)
     {

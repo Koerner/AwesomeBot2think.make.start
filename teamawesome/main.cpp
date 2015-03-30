@@ -40,7 +40,8 @@ int main (int argc, char** argv) {
         }
         std::cout << "Connected." << std::endl;
 
-        // Dynamixel Ansteuerung
+
+        // Robot Server Verbidnung / Dynamixel Ansteuerung
         DxlCon dxlCon;
 
         dxlCon.playAudio(DxlCon::AUDIO_HELLO);
@@ -52,6 +53,12 @@ int main (int argc, char** argv) {
         dxlCon.setDxlPos(DxlCon::NERF_PITCH, 0);
         dxlCon.setDxlPos(DxlCon::NERF_YAW, 0);
         dxlCon.setDxlPos(DxlCon::NERF_TRIGGER, 0);
+
+        // Send idle packets
+        QTimer idleTimer;
+        QObject::connect(&idleTimer, SIGNAL(timeout()), &dxlCon, SLOT(sendIdle()));
+        idleTimer.setInterval(1000);
+        idleTimer.start();
 
         // Nerf Motor
         dxlCon.setNerfMotor(100);

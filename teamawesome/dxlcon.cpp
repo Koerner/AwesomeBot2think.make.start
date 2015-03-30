@@ -57,6 +57,12 @@ void DxlCon::setDxlTrig()
     return;
 }
 
+void DxlCon::sendIdle()
+{
+    qDebug() << "Send Idle";
+    setDxl(DxlCon::IDLE, DxlCon::DONTCARE, 0);
+}
+
 void DxlCon::resetDxlTrig()
 {
     this->setDxl(DxlCon::NERF_TRIGGER, DxlCon::POS, 2048);
