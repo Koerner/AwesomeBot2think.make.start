@@ -63,7 +63,7 @@ int main (int argc, char** argv) {
         // Nerf Motor
         dxlCon.setNerfMotor(100);
         //QThread::msleep(1000);
-        QTest::qSleep(1000);
+        QTest::qSleep(100);
         dxlCon.setNerfMotor(20);
 
         // Cam3D erstellen
@@ -91,7 +91,7 @@ int main (int argc, char** argv) {
         //QObject::connect(&joystick, SIGNAL(setInteraction(double,double)), &dxlCon, SLOT(setDxlInter(double,double)));
         QObject::connect(&joystick, SIGNAL(setTrig()), &dxlCon, SLOT(setDxlTrig()));
         QObject::connect(&joystick, SIGNAL(startNerf(int)),&dxlCon, SLOT(setNerfMotor(int)));
-        QObject::connect(&joystick, SIGNAL(buttonXbox(bool)), &dxlCon, SLOT(playAwesome(bool)));
+        QObject::connect(&joystick, SIGNAL(buttonsAudio(int)), &dxlCon, SLOT(buttonAudio(int)));
 
         // Oculus Sensoren
         OculusSensor oculus;

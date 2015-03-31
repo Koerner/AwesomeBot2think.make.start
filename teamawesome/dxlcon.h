@@ -33,7 +33,7 @@ public slots:
     void setNerfMotor(const int val);
 
     void playAudio(const int audioID);
-    void playAwesome(bool play);
+    void buttonAudio(int play);
 
     void setDxlCamera(double yaw,double pitch,double roll);
     void setDxlPos(DxlId id, double angleDeg);

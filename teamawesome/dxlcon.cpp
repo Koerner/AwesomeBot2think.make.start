@@ -4,6 +4,8 @@
 #include "iostream"
 #include <QtNetwork>
 
+#include "gamepad.h"
+
 const QString DxlCon::host = QString("172.26.1.1");
 const int DxlCon::port = 50000;
 
@@ -92,9 +94,23 @@ void DxlCon::playAudio(const int audioID)
     setDxl(DxlCon::AUDIO, DxlCon::DONTCARE, audioID);
 }
 
-void DxlCon::playAwesome(bool play)
+void DxlCon::buttonAudio(int play)
 {
-    if(play) playAudio(DxlCon::AUDIO_AWESOME);
+
+    switch(play) {
+    case 2:
+        playAudio(DxlCon::AUDIO_AWESOME);
+        break;
+    case 3:
+        playAudio(DxlCon::AUDIO_BACK);
+        break;
+    case 1:
+        playAudio(DxlCon::AUDIO_HELLO);
+        break;
+    case 4:
+        playAudio(DxlCon::AUDIO_EATSHIT);
+        break;
+    }
 }
 
 

@@ -68,8 +68,23 @@ void Gamepad::run()
 
     Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
 
-    Q_SIGNAL buttonXbox(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_XBOX));
-
+    if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_AWESOME))
+    {
+        Q_SIGNAL buttonsAudio(2);
+        qDebug() << "button awesome";
+    } else if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_HELLO))
+    {
+        Q_SIGNAL buttonsAudio(1);
+        qDebug() << "button hello";
+    } else if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_BACK))
+    {
+        Q_SIGNAL buttonsAudio(3);
+        qDebug() << "button back";
+    } else if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_EAT) && sf::Joystick::isButtonPressed(m_controllerIndex, BTN_Y))
+    {
+        Q_SIGNAL buttonsAudio(4);
+        qDebug() << "button eat";
+    }
 
     return;
 }
