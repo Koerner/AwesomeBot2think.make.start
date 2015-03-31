@@ -15,7 +15,7 @@
 #include "renderwindow.h"
 #include "dxlcon.h"
 #include "oculussensor.h"
-#include "laser.h"
+//#include "laser.h"
 
 // Global pointers
 Com* com;
