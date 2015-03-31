@@ -63,7 +63,7 @@ int main (int argc, char** argv) {
         // Nerf Motor
         dxlCon.setNerfMotor(100);
         //QThread::msleep(1000);
-        QTest::qSleep(100);
+        QTest::qSleep(1000);
         dxlCon.setNerfMotor(20);
 
         // Cam3D erstellen

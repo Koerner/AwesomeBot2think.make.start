@@ -26,7 +26,8 @@ void Gamepad::run()
     QCoreApplication::processEvents();
     sf::Joystick::update();
 
-    if(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_A) == true)
+    // Wenn Btn A oder B gedrückt, Fahren aktivieren
+    if(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_A) || sf::Joystick::isButtonPressed(m_controllerIndex, BTN_B))
     {
 
         double joystick_y = sf::Joystick::getAxisPosition(0,sf::Joystick::Y);
@@ -51,23 +52,28 @@ void Gamepad::run()
         Q_SIGNAL setCarLike(0,0,0);
     }
 
+    // Button Hinten Rechts: Schiessen
     if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_RB) == true)
     {
         //std::cout << "SHOOT" << std::endl;
         Q_SIGNAL setTrig();
     }
 
+
     if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_X) == true)
-    {
+    { // BTN X = NERF hochdrehen + Zielen per Oculus
         Q_SIGNAL startNerf(100);
+        Q_SIGNAL buttonB(true); // Zielen ein
     }
     else
-    {
+    { // X nicht gedrückt, Zielen nur wenn B gedrückt
         Q_SIGNAL startNerf(20);
+        Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
     }
 
-    Q_SIGNAL buttonB(sf::Joystick::isButtonPressed(m_controllerIndex,BTN_B));
 
+
+    // Audio zeug
     if(sf::Joystick::isButtonPressed(m_controllerIndex, BTN_AWESOME))
     {
         Q_SIGNAL buttonsAudio(2);
