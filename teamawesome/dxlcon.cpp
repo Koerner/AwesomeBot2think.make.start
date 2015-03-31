@@ -20,6 +20,9 @@ DxlCon::DxlCon(QObject *parent) :
     resetTime = 300;
     triggerReset = true;
 
+    lastAuioPlayed = new QElapsedTimer;
+    lastAuioPlayed->start();
+
     this->resetDxlTrig();
 }
 
@@ -115,6 +118,13 @@ void DxlCon::setDxl(DxlId id, DxlCmd cmd, int val)
         dxlTempVal[id] = val;
     } else if( val != dxlTempVal[id] ) {
         dxlTempVal[id] = val;
+    } else if ( id == DxlCon::AUDIO ) {
+        if(lastAuioPlayed->elapsed() > 500)
+        {
+            lastAuioPlayed->restart();
+        } else {
+            return; // don't send this, not enough time has passed
+        }
     } else if( id != DxlCon::IDLE) {
         return; // no change of value, so don't send anything
     }

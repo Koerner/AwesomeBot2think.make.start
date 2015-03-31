@@ -147,14 +147,14 @@ void RenderWindow::slotFrame(cv::Mat img)
             {
 
                 tempMat = AR724;
-                qDebug()<<"Marker "<< temp.id;
+//                qDebug()<<"Marker "<< temp.id;
                 cv::Point2f center_temp = temp.getCenter();
 
                 if(center_temp.x < ( img.cols / 2))
                 {
                     tempMat = AR724;
                     AR724_markerL = temp;
-                    qDebug() << "LINKS";
+//                    qDebug() << "LINKS";
                     AR724_counterL = KEEP_TIME;
 
                 }
@@ -162,7 +162,7 @@ void RenderWindow::slotFrame(cv::Mat img)
                 if(center_temp.x > ( img.cols / 2))
                 {
                     AR724_markerR = temp;
-                    qDebug() << "RECHTS";
+//                    qDebug() << "RECHTS";
                     AR724_counterR = KEEP_TIME;
                 }
             }
@@ -172,14 +172,14 @@ void RenderWindow::slotFrame(cv::Mat img)
             {
 
                 tempMat = AR725;
-                qDebug()<<"Marker "<< temp.id;
+//                qDebug()<<"Marker "<< temp.id;
                 cv::Point2f center_temp = temp.getCenter();
 
                 if(center_temp.x < ( img.cols / 2))
                 {
                     tempMat = AR725;
                     AR725_markerL = temp;
-                    qDebug() << "LINKS";
+//                    qDebug() << "LINKS";
                     AR725_counterL = KEEP_TIME;
 
                 }
@@ -187,7 +187,7 @@ void RenderWindow::slotFrame(cv::Mat img)
                 if(center_temp.x > ( img.cols / 2))
                 {
                     AR725_markerR = temp;
-                    qDebug() << "RECHTS";
+//                    qDebug() << "RECHTS";
                     AR725_counterR = KEEP_TIME;
                 }
             }
@@ -197,14 +197,14 @@ void RenderWindow::slotFrame(cv::Mat img)
             {
 
                 tempMat = AR726;
-                qDebug()<<"Marker "<< temp.id;
+//                qDebug()<<"Marker "<< temp.id;
                 cv::Point2f center_temp = temp.getCenter();
 
                 if(center_temp.x < ( img.cols / 2))
                 {
                     tempMat = AR726;
                     AR726_markerL = temp;
-                    qDebug() << "LINKS";
+//                    qDebug() << "LINKS";
                     AR726_counterL = KEEP_TIME;
 
                 }
@@ -212,7 +212,7 @@ void RenderWindow::slotFrame(cv::Mat img)
                 if(center_temp.x > ( img.cols / 2))
                 {
                     AR726_markerR = temp;
-                    qDebug() << "RECHTS";
+//                    qDebug() << "RECHTS";
                     AR726_counterR = KEEP_TIME;
                 }
             }
@@ -222,14 +222,14 @@ void RenderWindow::slotFrame(cv::Mat img)
             {
 
                 tempMat = AR727;
-                qDebug()<<"Marker "<< temp.id;
+//                qDebug()<<"Marker "<< temp.id;
                 cv::Point2f center_temp = temp.getCenter();
 
                 if(center_temp.x < ( img.cols / 2))
                 {
                     tempMat = AR727;
                     AR727_markerL = temp;
-                    qDebug() << "LINKS";
+//                    qDebug() << "LINKS";
                     AR727_counterL = KEEP_TIME;
 
                 }
@@ -237,14 +237,14 @@ void RenderWindow::slotFrame(cv::Mat img)
                 if(center_temp.x > ( img.cols / 2))
                 {
                     AR727_markerR = temp;
-                    qDebug() << "RECHTS";
+//                    qDebug() << "RECHTS";
                     AR727_counterR = KEEP_TIME;
                 }
             }
                 break;
 
             default:
-                qDebug() << "Diese ID ist nicht konfiguriert";
+                qDebug() << "Marker ID" << temp.id << "ist nicht konfiguriert";
             }
 
         }

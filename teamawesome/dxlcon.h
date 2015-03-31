@@ -5,6 +5,7 @@
 #include <QHash>
 
 class QTcpSocket;
+class QElapsedTimer;
 
 class DxlCon : public QObject
 {
@@ -46,6 +47,7 @@ private slots:
 
 private:
     QTcpSocket *socket;
+    QElapsedTimer* lastAuioPlayed;
 
     int resetTime;
     bool triggerReset;
